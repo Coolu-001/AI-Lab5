@@ -17,19 +17,19 @@ def parse_args():
         argparse.Namespace: 包含所有命令行参数的对象。
     """
     parser = argparse.ArgumentParser(description="Training parameters")
-    parser.add_argument('--batch_size', type=int, default=128, help='Batch size for training')
-    parser.add_argument('--roberta_dropout', type=float, default=0.8, help='Dropout rate for RoBERTa')
+    parser.add_argument('--batch_size', type=int, default=16, help='Batch size for training')
+    parser.add_argument('--roberta_dropout', type=float, default=0.5, help='Dropout rate for RoBERTa')
     parser.add_argument('--roberta_lr', type=float, default=1e-5, help='Learning rate for RoBERTa')
     parser.add_argument('--middle_hidden_size', type=int, default=256, help='Hidden size for middle layer')
     parser.add_argument('--resnet_type', type=int, default=18, help='ResNet type (18, 34, 50, 101, 152)')
-    parser.add_argument('--resnet_dropout', type=float, default=0.8, help='Dropout rate for ResNet')
+    parser.add_argument('--resnet_dropout', type=float, default=0.5, help='Dropout rate for ResNet')
     parser.add_argument('--resnet_lr', type=float, default=1e-5, help='Learning rate for ResNet')
     parser.add_argument('--attention_nheads', type=int, default=8, help='Number of attention heads')
-    parser.add_argument('--attention_dropout', type=float, default=0.8, help='Dropout rate for attention layer')
-    parser.add_argument('--fusion_dropout', type=float, default=0.8, help='Dropout rate for fusion layer')
+    parser.add_argument('--attention_dropout', type=float, default=0.5, help='Dropout rate for attention layer')
+    parser.add_argument('--fusion_dropout', type=float, default=0.5, help='Dropout rate for fusion layer')
     parser.add_argument('--output_hidden_size', type=int, default=128, help='Hidden size for output layer')
     parser.add_argument('--weight_decay', type=float, default=1e-3, help='Weight decay for optimizer')
-    parser.add_argument('--lr', type=float, default=1e-6, help='Learning rate for optimizer')
+    parser.add_argument('--lr', type=float, default=1e-5, help='Learning rate for optimizer')
     args = parser.parse_args()
     return args
 
@@ -58,11 +58,9 @@ def generate_hyperparameter_grid():
     """生成超参数网格"""
     return {
         "batch_size": [16, 32],
-        "dropout": [0, 0.05, 0.1, 0.15, 0.2],
+        "dropout": [0.2, 0.5],
         "lr": [1e-5, 2e-5],
-        "output_hidden_size": [64, 128, 256],
-        "resnet_type": [18, 34, 50],
-        "attention_nheads": [8]
+        "output_hidden_size": [128, 256]
     }
 
 if __name__ == "__main__":
@@ -89,11 +87,9 @@ if __name__ == "__main__":
         config.lr = hyperparameters["lr"]
         config.output_hidden_size = hyperparameters["output_hidden_size"]
         config.middle_hidden_size = hyperparameters["output_hidden_size"]
-        config.resnet_type = hyperparameters["resnet_type"]
-        config.attention_nheads = hyperparameters["attention_nheads"]
 
         wandb.init(
-            project="AILAB5-SEARCH",
+            project="AILab5-Search",
             name=f"Trial_{trial + 1}_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
             config=hyperparameters,
             reinit=True,

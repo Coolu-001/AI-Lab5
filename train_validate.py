@@ -56,7 +56,7 @@ class trainer_validator():
         # self.optimizer = AdamW(params, lr=self.config.lr)
         self.optimizer = Adam(params, lr=self.config.lr)
         self.scheduler = ReduceLROnPlateau(self.optimizer, mode='min', factor=0.1, patience=2, threshold=0.01)
-        self.early_stopping = EarlyStopping(patience=10, delta = 0.01, verbose=True)
+        self.early_stopping = EarlyStopping(patience=5, delta = 0.01, verbose=True)
     
     def train(self, train_dataloader, val_dataloader, num_epochs, evaluate_every=1):
         """

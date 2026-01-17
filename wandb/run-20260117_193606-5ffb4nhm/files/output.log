@@ -1,0 +1,26 @@
+Some weights of RobertaModel were not initialized from the model checkpoint at FacebookAI/roberta-base and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+ ... (more hidden) ...
+Traceback (most recent call last):
+  File "/Users/caolu/Desktop/AI_Lab5/search.py", line 110, in <module>
+    val_accuracy = trainer.train(train_dataloader, valid_dataloader, config.epochs, evaluate_every=1)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/Desktop/AI_Lab5/train_validate.py", line 105, in train
+    self.optimizer.step()
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/optim/optimizer.py", line 487, in wrapper
+    out = func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/optim/optimizer.py", line 91, in _use_grad
+    ret = func(self, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/optim/adam.py", line 223, in step
+    adam(
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/optim/optimizer.py", line 154, in maybe_fallback
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/optim/adam.py", line 784, in adam
+    func(
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/optim/adam.py", line 430, in _single_tensor_adam
+    denom = (exp_avg_sq.sqrt() / bias_correction2_sqrt).add_(eps)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

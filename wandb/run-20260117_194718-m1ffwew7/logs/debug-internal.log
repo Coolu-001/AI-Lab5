@@ -1,0 +1,9 @@
+{"time":"2026-01-17T19:47:18.47575+08:00","level":"INFO","msg":"stream: starting","core version":"0.24.0"}
+{"time":"2026-01-17T19:47:19.835515+08:00","level":"INFO","msg":"stream: created new stream","id":"m1ffwew7"}
+{"time":"2026-01-17T19:47:19.835849+08:00","level":"INFO","msg":"handler: started","stream_id":"m1ffwew7"}
+{"time":"2026-01-17T19:47:19.835929+08:00","level":"INFO","msg":"writer: started","stream_id":"m1ffwew7"}
+{"time":"2026-01-17T19:47:19.836112+08:00","level":"INFO","msg":"stream: started","id":"m1ffwew7"}
+{"time":"2026-01-17T19:47:19.836273+08:00","level":"INFO","msg":"sender: started","stream_id":"m1ffwew7"}
+{"time":"2026-01-17T19:50:38.222632+08:00","level":"ERROR","msg":"api: HTTP error","status":400,"method":"POST","url":"https://api.wandb.ai/files/coolu0811-east-china-normal-university/AILAB5-SEARCH/m1ffwew7/file_stream"}
+{"time":"2026-01-17T19:50:38.225127+08:00","level":"ERROR+4","msg":"filestream: fatal error: filestream: failed to upload: 400 Bad Request url=https://api.wandb.ai/files/coolu0811-east-china-normal-university/AILAB5-SEARCH/m1ffwew7/file_stream: {\"error\":\"Error 3140 (22032): Invalid JSON text: \\\"Invalid value.\\\" at position 247 in value for column 'runs.system_metrics'.\"}"}
+{"time":"2026-01-17T19:58:29.80822+08:00","level":"INFO","msg":"stream: closing","id":"m1ffwew7"}

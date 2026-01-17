@@ -22,7 +22,7 @@ def parse_args():
     parser.add_argument('--roberta_dropout', type=float, default=0.15, help='Dropout rate for RoBERTa')
     parser.add_argument('--roberta_lr', type=float, default=1e-5, help='Learning rate for RoBERTa')
     parser.add_argument('--middle_hidden_size', type=int, default=256, help='Hidden size for middle layer')
-    parser.add_argument('--resnet_type', type=int, default=101, help='ResNet type (18, 34, 50, 101, 152)')
+    parser.add_argument('--resnet_type', type=int, default=18, help='ResNet type (18, 34, 50, 101, 152)')
     parser.add_argument('--resnet_dropout', type=float, default=0.15, help='Dropout rate for ResNet')
     parser.add_argument('--resnet_lr', type=float, default=1e-5, help='Learning rate for ResNet')
     parser.add_argument('--attention_nheads', type=int, default=8, help='Number of attention heads')
@@ -77,7 +77,7 @@ if __name__ == "__main__":
     set_seed(config.seed)
     wandb.init(
             project="AILab5",
-            name=f"MultiModel_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+            name=f"MultiModel3_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
             config = {
                 "batch_size": config.batch_size,
                 "roberta_dropout": config.roberta_dropout,

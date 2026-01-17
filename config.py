@@ -1,7 +1,3 @@
-"""
-config.py 用于存放所有的配置参数
-"""
-
 class config:
     data_path = "dataset/data"
     train_guid_label_path = "dataset/train.txt"
@@ -11,14 +7,14 @@ class config:
     roberta_path = "FacebookAI/roberta-base"
     image_size = 224
     seed = 327
-    num_workers = 4
+    num_workers = 2
     epochs = 50
     max_seq_length = 50
     fixed_text_param = False
     fixed_image_param = False
     num_labels = 3
 
-    batch_size = 128
+    batch_size = 16
     roberta_dropout = 0.5
     roberta_lr = 1e-6
     middle_hidden_size = 256
