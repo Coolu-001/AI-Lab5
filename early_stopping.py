@@ -25,7 +25,6 @@ class EarlyStopping:
     def __call__(self, val_loss, model):
         """
         每次验证集损失更新时调用此方法
-
         Args:
             val_loss (float): 当前的验证集损失
             model (torch.nn.Module): 当前训练的模型
