@@ -1,0 +1,12 @@
+{"time":"2026-01-18T22:19:06.914646+08:00","level":"INFO","msg":"stream: starting","core version":"0.24.0"}
+{"time":"2026-01-18T22:19:13.46863+08:00","level":"INFO","msg":"stream: created new stream","id":"n89qs2lm"}
+{"time":"2026-01-18T22:19:13.469436+08:00","level":"INFO","msg":"handler: started","stream_id":"n89qs2lm"}
+{"time":"2026-01-18T22:19:13.469866+08:00","level":"INFO","msg":"stream: started","id":"n89qs2lm"}
+{"time":"2026-01-18T22:19:13.469945+08:00","level":"INFO","msg":"sender: started","stream_id":"n89qs2lm"}
+{"time":"2026-01-18T22:19:13.46998+08:00","level":"INFO","msg":"writer: started","stream_id":"n89qs2lm"}
+{"time":"2026-01-18T22:19:22.515346+08:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/coolu0811-east-china-normal-university/AILAB5/n89qs2lm/file_stream\": read tcp 192.168.110.24:55674->35.186.228.49:443: read: connection reset by peer"}
+{"time":"2026-01-18T22:21:09.244274+08:00","level":"INFO","msg":"stream: closing","id":"n89qs2lm"}
+{"time":"2026-01-18T22:21:12.144667+08:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2026-01-18T22:21:13.007116+08:00","level":"INFO","msg":"handler: closed","stream_id":"n89qs2lm"}
+{"time":"2026-01-18T22:21:13.008305+08:00","level":"INFO","msg":"sender: closed","stream_id":"n89qs2lm"}
+{"time":"2026-01-18T22:21:13.008366+08:00","level":"INFO","msg":"stream: closed","id":"n89qs2lm"}

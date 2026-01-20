@@ -1,0 +1,13 @@
+{"time":"2026-01-18T13:49:31.785603+08:00","level":"INFO","msg":"stream: starting","core version":"0.24.0"}
+{"time":"2026-01-18T13:49:34.978503+08:00","level":"INFO","msg":"stream: created new stream","id":"ryvhpslt"}
+{"time":"2026-01-18T13:49:34.9792+08:00","level":"INFO","msg":"handler: started","stream_id":"ryvhpslt"}
+{"time":"2026-01-18T13:49:34.980501+08:00","level":"INFO","msg":"stream: started","id":"ryvhpslt"}
+{"time":"2026-01-18T13:49:34.981029+08:00","level":"INFO","msg":"sender: started","stream_id":"ryvhpslt"}
+{"time":"2026-01-18T13:49:34.981142+08:00","level":"INFO","msg":"writer: started","stream_id":"ryvhpslt"}
+{"time":"2026-01-18T14:02:22.915854+08:00","level":"INFO","msg":"api: retrying HTTP error","status":500,"url":"https://api.wandb.ai/files/coolu0811-east-china-normal-university/AILAB5/ryvhpslt/file_stream","body":"{\"error\":\"context deadline exceeded\"}"}
+{"time":"2026-01-18T14:07:24.707101+08:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2026-01-18T14:07:25.123544+08:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2026-01-18T14:07:25.133333+08:00","level":"INFO","msg":"stream: closing","id":"ryvhpslt"}
+{"time":"2026-01-18T14:07:25.133656+08:00","level":"INFO","msg":"handler: closed","stream_id":"ryvhpslt"}
+{"time":"2026-01-18T14:07:25.133872+08:00","level":"INFO","msg":"sender: closed","stream_id":"ryvhpslt"}
+{"time":"2026-01-18T14:07:25.133898+08:00","level":"INFO","msg":"stream: closed","id":"ryvhpslt"}

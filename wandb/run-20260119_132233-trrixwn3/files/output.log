@@ -1,0 +1,43 @@
+Some weights of RobertaModel were not initialized from the model checkpoint at FacebookAI/roberta-base and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Epoch 1/50:   0%|                                            | 0/200 [01:42<?, ?it/s]
+Traceback (most recent call last):
+  File "/Users/caolu/Desktop/AI_Lab5/main.py", line 131, in <module>
+    val_accuracy = trainer.train(train_dataloader, valid_dataloader, config.epochs, evaluate_every=1)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/Desktop/AI_Lab5/train_validate.py", line 116, in train
+    train_pred_labels, loss = self.model(texts, texts_mask, images, labels)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/Desktop/AI_Lab5/MultiModelTranformer.py", line 178, in forward
+    attn_out = self.attention(transformer_input)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/transformer.py", line 904, in forward
+    + self._sa_block(x, src_mask, src_key_padding_mask, is_causal=is_causal)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/transformer.py", line 918, in _sa_block
+    x = self.self_attn(
+        ^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/activation.py", line 1368, in forward
+    attn_output, attn_output_weights = F.multi_head_attention_forward(
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/functional.py", line 6070, in multi_head_attention_forward
+    embed_dim == embed_dim_to_check
+AssertionError: was expecting embedding dimension of 1536, but got 768

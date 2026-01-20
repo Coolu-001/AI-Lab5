@@ -1,0 +1,27 @@
+Some weights of RobertaModel were not initialized from the model checkpoint at FacebookAI/roberta-base and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Epoch 1/50: 100%|██████████████████████████████████| 200/200 [09:46<00:00,  2.93s/it]
+Evaluating: 100%|████████████████████████████████████| 50/50 [00:44<00:00,  1.13it/s]
+Saved 314 bad cases to bad_cases.txt
+Epoch 2/50: 100%|██████████████████████████████████| 200/200 [10:18<00:00,  3.09s/it]
+Evaluating: 100%|████████████████████████████████████| 50/50 [00:40<00:00,  1.24it/s]
+Saved 295 bad cases to bad_cases.txt
+Epoch 3/50: 100%|██████████████████████████████████| 200/200 [07:47<00:00,  2.34s/it]
+Evaluating: 100%|████████████████████████████████████| 50/50 [00:40<00:00,  1.24it/s]
+Saved 288 bad cases to bad_cases.txt
+Epoch 4/50: 100%|██████████████████████████████████| 200/200 [08:17<00:00,  2.49s/it]
+Evaluating: 100%|████████████████████████████████████| 50/50 [00:50<00:00,  1.01s/it]
+EarlyStopping counter: 1 out of 5
+Epoch 5/50: 100%|██████████████████████████████████| 200/200 [06:58<00:00,  2.09s/it]
+Evaluating: 100%|████████████████████████████████████| 50/50 [00:41<00:00,  1.21it/s]
+EarlyStopping counter: 2 out of 5
+Epoch 6/50: 100%|██████████████████████████████████| 200/200 [07:26<00:00,  2.23s/it]
+Evaluating: 100%|████████████████████████████████████| 50/50 [00:42<00:00,  1.18it/s]
+EarlyStopping counter: 3 out of 5
+Epoch 7/50: 100%|██████████████████████████████████| 200/200 [07:00<00:00,  2.10s/it]
+Evaluating: 100%|████████████████████████████████████| 50/50 [00:40<00:00,  1.23it/s]
+EarlyStopping counter: 4 out of 5
+Epoch 8/50: 100%|██████████████████████████████████| 200/200 [06:58<00:00,  2.09s/it]
+Evaluating: 100%|████████████████████████████████████| 50/50 [00:44<00:00,  1.13it/s]
+EarlyStopping counter: 5 out of 5
+Early stopping triggered.

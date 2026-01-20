@@ -1,0 +1,32 @@
+Traceback (most recent call last):
+  File "/Users/caolu/Desktop/AI_Lab5/main.py", line 99, in <module>
+    train_dataloader, valid_dataloader, test_dataloader = create_dataloader(
+                                                          ^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/Desktop/AI_Lab5/load_dataset.py", line 161, in create_dataloader
+    train_dataset_inputs = encode_text_image(original_train_data, "train")
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/Desktop/AI_Lab5/load_dataset.py", line 137, in encode_text_image
+    encoded_images.append(train_transform(image))
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torchvision/transforms/transforms.py", line 95, in __call__
+    img = t(img)
+          ^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torchvision/transforms/transforms.py", line 713, in forward
+    return F.hflip(img)
+           ^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torchvision/transforms/functional.py", line 669, in hflip
+    return F_pil.hflip(img)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torchvision/transforms/_functional_pil.py", line 56, in hflip
+    return img.transpose(Image.FLIP_LEFT_RIGHT)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/PIL/Image.py", line 2990, in transpose
+    return self._new(self.im.transpose(method))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

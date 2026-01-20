@@ -1,0 +1,29 @@
+Some weights of RobertaModel were not initialized from the model checkpoint at FacebookAI/roberta-base and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Epoch 1/50: 100%|██████████████████████████████████| 200/200 [05:38<00:00,  1.69s/it]
+Evaluating: 100%|████████████████████████████████████| 50/50 [00:29<00:00,  1.68it/s]
+Saved 266 bad cases to best_model_bad_cases.txt
+Epoch 2/50: 100%|██████████████████████████████████| 200/200 [06:35<00:00,  1.98s/it]
+Evaluating: 100%|████████████████████████████████████| 50/50 [00:19<00:00,  2.55it/s]
+Saved 262 bad cases to best_model_bad_cases.txt
+Epoch 3/50: 100%|██████████████████████████████████| 200/200 [06:20<00:00,  1.90s/it]
+Evaluating: 100%|████████████████████████████████████| 50/50 [00:22<00:00,  2.18it/s]
+Saved 229 bad cases to best_model_bad_cases.txt
+Epoch 4/50: 100%|██████████████████████████████████| 200/200 [06:11<00:00,  1.86s/it]
+Evaluating: 100%|████████████████████████████████████| 50/50 [00:18<00:00,  2.66it/s]
+Saved 227 bad cases to best_model_bad_cases.txt
+EarlyStopping counter: 1 out of 5
+Epoch 5/50: 100%|██████████████████████████████████| 200/200 [05:14<00:00,  1.57s/it]
+Evaluating: 100%|████████████████████████████████████| 50/50 [00:18<00:00,  2.66it/s]
+Saved 215 bad cases to best_model_bad_cases.txt
+EarlyStopping counter: 2 out of 5
+Epoch 6/50: 100%|██████████████████████████████████| 200/200 [05:46<00:00,  1.73s/it]
+Evaluating: 100%|████████████████████████████████████| 50/50 [00:20<00:00,  2.40it/s]
+EarlyStopping counter: 3 out of 5
+Epoch 7/50: 100%|██████████████████████████████████| 200/200 [05:06<00:00,  1.53s/it]
+Evaluating: 100%|████████████████████████████████████| 50/50 [00:19<00:00,  2.61it/s]
+EarlyStopping counter: 4 out of 5
+Epoch 8/50: 100%|██████████████████████████████████| 200/200 [06:10<00:00,  1.85s/it]
+Evaluating: 100%|████████████████████████████████████| 50/50 [00:21<00:00,  2.38it/s]
+EarlyStopping counter: 5 out of 5
+Early stopping triggered.

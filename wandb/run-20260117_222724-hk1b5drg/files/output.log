@@ -1,0 +1,23 @@
+Some weights of RobertaModel were not initialized from the model checkpoint at FacebookAI/roberta-base and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Epoch 1/50: 100%|██████████████████████████████████████████████████████████████████████| 200/200 [18:14<00:00,  5.47s/it]
+Evaluating: 100%|████████████████████████████████████████████████████████████████████████| 50/50 [00:32<00:00,  1.53it/s]
+Epoch 2/50: 100%|██████████████████████████████████████████████████████████████████████| 200/200 [14:58<00:00,  4.49s/it]
+Evaluating: 100%|████████████████████████████████████████████████████████████████████████| 50/50 [00:25<00:00,  1.95it/s]
+Epoch 3/50: 100%|██████████████████████████████████████████████████████████████████████| 200/200 [12:20<00:00,  3.70s/it]
+Evaluating: 100%|████████████████████████████████████████████████████████████████████████| 50/50 [00:28<00:00,  1.77it/s]
+Epoch 4/50:   8%|█████▏                                                               | 15/200 [05:08<1:03:24, 20.57s/it]
+Traceback (most recent call last):
+  File "/Users/caolu/Desktop/AI_Lab5/search.py", line 108, in <module>
+    val_accuracy = trainer.train(train_dataloader, valid_dataloader, config.epochs, evaluate_every=1)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/Desktop/AI_Lab5/train_validate.py", line 104, in train
+    loss.backward()
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/_tensor.py", line 581, in backward
+    torch.autograd.backward(
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/autograd/__init__.py", line 347, in backward
+    _engine_run_backward(
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/autograd/graph.py", line 825, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

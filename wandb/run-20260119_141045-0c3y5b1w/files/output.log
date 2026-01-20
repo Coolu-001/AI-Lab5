@@ -1,0 +1,120 @@
+Some weights of RobertaModel were not initialized from the model checkpoint at FacebookAI/roberta-base and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Epoch 1/50: 100%|██████████████████████████████████████████████| 200/200 [15:12<00:00,  4.56s/it]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [00:44<00:00,  1.13it/s]
+Saved 230 bad cases to bad_cases.txt
+[34m[1mwandb[0m: [32m[41mERROR[0m Unable to connect to https://api.wandb.ai to verify API token.
+urllib3.exceptions.SSLError: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1016)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/requests/adapters.py", line 644, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/urllib3/util/retry.py", line 535, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.wandb.ai', port=443): Max retries exceeded with url: /graphql (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1016)')))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/wandb_login.py", line 299, in _verify_login
+    is_api_key_valid = api.validate_api_key()
+                       ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/apis/internal.py", line 66, in validate_api_key
+    return self.api.validate_api_key()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/internal/internal_api.py", line 408, in validate_api_key
+    res = self.execute(gql("query { viewer { id } }"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/internal/internal_api.py", line 397, in execute
+    return self.client.execute(*args, **kwargs)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/lib/gql_request.py", line 70, in execute
+    request = self.session.post(self.url, **post_args)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/requests/sessions.py", line 637, in post
+    return self.request("POST", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/requests/adapters.py", line 675, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='api.wandb.ai', port=443): Max retries exceeded with url: /graphql (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1016)')))
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/caolu/Desktop/AI_Lab5/main.py", line 134, in <module>
+    val_accuracy = trainer.train(train_dataloader, valid_dataloader, config.epochs, evaluate_every=1)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/Desktop/AI_Lab5/train_validate.py", line 184, in train
+    wandb.log({
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/wandb_run.py", line 400, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/wandb_run.py", line 458, in wrapper_fn
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/wandb_run.py", line 445, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/wandb_run.py", line 2042, in log
+    self._log(data=data, step=step, commit=commit)
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/wandb_run.py", line 1753, in _log
+    self._partial_history_callback(data, step, commit)
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/wandb_run.py", line 400, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/wandb_run.py", line 1581, in _partial_history_callback
+    self._backend.interface.publish_partial_history(
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/interface/interface.py", line 689, in publish_partial_history
+    data = history_dict_to_json(run, data, step=user_step, ignore_copy_err=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/data_types/utils.py", line 54, in history_dict_to_json
+    payload[key] = val_to_json(
+                   ^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/data_types/utils.py", line 151, in val_to_json
+    _log_table_artifact(val, key, run)
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/data_types/utils.py", line 202, in _log_table_artifact
+    run.log_artifact(art)
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/wandb_run.py", line 400, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/wandb_run.py", line 458, in wrapper_fn
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/wandb_run.py", line 445, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/wandb_run.py", line 3174, in log_artifact
+    return self._log_artifact(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/wandb_run.py", line 3319, in _log_artifact
+    self._assert_can_log_artifact(artifact)
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/wandb_run.py", line 3379, in _assert_can_log_artifact
+    public_api = self._public_api()
+                 ^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/wandb_run.py", line 3367, in _public_api
+    self._cached_public_api = public.Api(overrides, api_key=self._settings.api_key)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/apis/public/api.py", line 199, in __init__
+    wandb_login._verify_login(
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/wandb_login.py", line 301, in _verify_login
+    raise AuthenticationError(
+wandb.errors.errors.AuthenticationError: Unable to connect to https://api.wandb.ai to verify API token.

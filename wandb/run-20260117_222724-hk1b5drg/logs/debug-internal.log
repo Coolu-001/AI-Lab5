@@ -1,0 +1,12 @@
+{"time":"2026-01-17T22:27:24.642582+08:00","level":"INFO","msg":"stream: starting","core version":"0.24.0"}
+{"time":"2026-01-17T22:27:25.964569+08:00","level":"INFO","msg":"stream: created new stream","id":"hk1b5drg"}
+{"time":"2026-01-17T22:27:25.965105+08:00","level":"INFO","msg":"handler: started","stream_id":"hk1b5drg"}
+{"time":"2026-01-17T22:27:25.965219+08:00","level":"INFO","msg":"writer: started","stream_id":"hk1b5drg"}
+{"time":"2026-01-17T22:27:25.965245+08:00","level":"INFO","msg":"sender: started","stream_id":"hk1b5drg"}
+{"time":"2026-01-17T22:27:25.96545+08:00","level":"INFO","msg":"stream: started","id":"hk1b5drg"}
+{"time":"2026-01-17T23:16:01.078846+08:00","level":"ERROR","msg":"monitor: error sampling metrics: fork/exec /usr/sbin/netstat: resource temporarily unavailable"}
+{"time":"2026-01-17T23:20:12.776174+08:00","level":"INFO","msg":"stream: closing","id":"hk1b5drg"}
+{"time":"2026-01-17T23:21:35.155834+08:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2026-01-17T23:21:36.580407+08:00","level":"INFO","msg":"handler: closed","stream_id":"hk1b5drg"}
+{"time":"2026-01-17T23:21:36.582094+08:00","level":"INFO","msg":"sender: closed","stream_id":"hk1b5drg"}
+{"time":"2026-01-17T23:21:36.583469+08:00","level":"INFO","msg":"stream: closed","id":"hk1b5drg"}
