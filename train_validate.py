@@ -36,13 +36,14 @@ class trainer_validator():
         clip_params = [p for n, p in self.model.named_parameters() if "image_model.model" in n]
 
         # 提取那两个关键的融合权重（使用高学习率）
-        weight_params = [p for n, p in self.model.named_parameters() if "w_text" in n or "w_image" in n]
+        # weight_params = [p for n, p in self.model.named_parameters() if "w_text" in n or "w_image" in n]
 
         # 提取剩余所有参数（分类器分类头、各种 LayerNorm 等）
         # 确保排除掉上面已经提取过的所有东西
+        # other_params = [p for n, p in self.model.named_parameters() 
+        #                 if not any(k in n for k in ["text_model.roberta", "image_model.model", "w_text", "w_image"])]
         other_params = [p for n, p in self.model.named_parameters() 
-                        if not any(k in n for k in ["text_model.roberta", "image_model.model", "w_text", "w_image"])]
-
+                if "text_model.roberta" not in n and "image_model.model" not in n]
         # 2. 构造优化器参数组（确保无重叠）
         optimizer_grouped_parameters = [
             # 文本分支 (RoBERTa)
@@ -52,7 +53,7 @@ class trainer_validator():
             {"params": clip_params, "lr": self.config.clip_lr, "weight_decay": self.config.weight_decay},
             
             # 关键：末端融合权重 (给它一个极大的学习率 0.01 甚至 0.1)
-            {"params": weight_params, "lr": 1e-2, "weight_decay": 0.0},
+            # {"params": weight_params, "lr": 1e-2, "weight_decay": 0.0},
             
             # 普通分类层和融合层
             {"params": other_params, "lr": self.config.lr, "weight_decay": self.config.weight_decay}
@@ -83,6 +84,21 @@ class trainer_validator():
         best_val_accuracy = 0
         
         for epoch in range(num_epochs):
+        # --- 两阶段预热核心代码开始 ---
+            if epoch < 3: 
+                # 第一阶段（Epoch 1-2）：侧重文本，压制图像
+                print(f" >>> Phase 1: Warming up Text Branch (Epoch {epoch})")
+                for param_group in self.optimizer.param_groups:
+                    if "text_model" in param_group.get("name", ""):
+                        param_group['lr'] = self.config.roberta_lr  # 正常学习率 (如 2e-5)
+                    if "image_model" in param_group.get("name", ""):
+                        param_group['lr'] = 1e-8  # 极低学习率，近乎冻结
+            elif epoch == 3:
+                # 第二阶段（Epoch 3 开始）：解冻图像分支，进行全模态微调
+                print(f" >>> Phase 2: Unfreezing Image Branch for Joint Training")
+                for param_group in self.optimizer.param_groups:
+                    if "image_model" in param_group.get("name", ""):
+                        param_group['lr'] = self.config.clip_lr  # 恢复正常学习率 (如 1e-6)
             self.model.train()
             train_loss_total = 0
             train_pred, train_true = [], []
@@ -90,11 +106,14 @@ class trainer_validator():
             pbar = tqdm(train_dataloader, desc=f"Epoch {epoch+1}/{num_epochs}")
             for batch in pbar:
                 iteration += 1
-                guids, texts, texts_mask, images, labels = batch
-                texts, texts_mask, images, labels = texts.to(self.device), texts_mask.to(self.device), images.to(self.device), labels.to(self.device)
+                guids, input_ids, attention_mask, images, labels = batch
+                input_ids = input_ids.to(self.device)
+                attention_mask = attention_mask.to(self.device)
+                images = images.to(self.device)
+                labels = labels.to(self.device)
 
                 # 前向传播
-                train_pred_labels, loss = self.model(texts, texts_mask, images, labels)
+                train_pred_labels, loss, (m, s) = self.model(input_ids, attention_mask, images, labels)
 
                 # 反向传播与优化
                 self.optimizer.zero_grad()
@@ -129,22 +148,30 @@ class trainer_validator():
                     self.model.eval()
                     val_loss_total, val_pred, val_true = 0.0, [], []
                     current_epoch_bad_cases = []
+                    all_means = []
+                    all_stds = []
 
                     for batch in tqdm(val_dataloader, desc="Evaluating"):
-                        guids, texts, texts_mask, images, labels = batch
-                        texts, texts_mask, images, labels = texts.to(self.device), texts_mask.to(self.device), images.to(self.device), labels.to(self.device)
-                        
-                        val_pred_labels, loss = self.model(texts, texts_mask, images, labels)
+                        guids, input_ids, attention_mask, images, labels = batch
+                        input_ids = input_ids.to(self.device)
+                        attention_mask = attention_mask.to(self.device)
+                        images = images.to(self.device)
+                        labels = labels.to(self.device)
+                        # val_pred_labels, loss = self.model(texts, texts_mask, images, labels)
+                        val_pred_labels, loss, (m, s) = self.model(input_ids, attention_mask, images, labels)
                         val_loss_total += loss.item()
                         
                         preds_cpu, labels_cpu = val_pred_labels.cpu().numpy(), labels.cpu().numpy()
                         val_true.extend(labels_cpu)
                         val_pred.extend(preds_cpu)
+                        all_means.append(m)
+                        all_stds.append(s)
                         
                         for i in range(len(labels_cpu)):
                             if preds_cpu[i] != labels_cpu[i]:
                                 current_epoch_bad_cases.append({"guid": guids[i], "true_label": int(labels_cpu[i]), "pred_label": int(preds_cpu[i])})
-
+                    avg_alpha_mean = sum(all_means) / len(all_means)
+                    avg_alpha_std = sum(all_stds) / len(all_stds)
                     val_acc = accuracy_score(val_true, val_pred)
                     val_epoch_loss = val_loss_total / len(val_dataloader)
                     
@@ -157,21 +184,23 @@ class trainer_validator():
                     wandb.log({
                         "val_loss": val_epoch_loss,
                         "val_accuracy": val_acc,
-                        "val_f1": f1_score(val_true, val_pred, average="weighted")
+                        "val_f1": f1_score(val_true, val_pred, average="weighted"),
+                        "alpha_mean": avg_alpha_mean, # 记录动态权重的平均值
+                        "alpha_std": avg_alpha_std      # 记录动态权重的离散度
                     })
 
-                    # 在验证结束、打印 val_accuracy 之后添加
-                    if hasattr(self.model, 'w_text') and hasattr(self.model, 'w_image'):
-                        # 使用 .item() 获取标量值
-                        w_t = self.model.w_text.item()
-                        w_i = self.model.w_image.item()
-                        print(f"\n[Modality Weights] Text: {w_t:.4f}, Image: {w_i:.4f}")
+                    # # 在验证结束、打印 val_accuracy 之后添加
+                    # if hasattr(self.model, 'w_text') and hasattr(self.model, 'w_image'):
+                    #     # 使用 .item() 获取标量值
+                    #     w_t = self.model.w_text.item()
+                    #     w_i = self.model.w_image.item()
+                    #     print(f"\n[Modality Weights] Text: {w_t:.4f}, Image: {w_i:.4f}")
                         
-                        # 同时记录到 wandb 方便观察曲线
-                        wandb.log({
-                            "weight_text": w_t,
-                            "weight_image": w_i
-                        })
+                    #     # 同时记录到 wandb 方便观察曲线
+                    #     wandb.log({
+                    #         "weight_text": w_t,
+                    #         "weight_image": w_i
+                    #     })
 
                     # 早停判定：主要监控 val_loss 以防止过拟合
                     self.early_stopping(val_epoch_loss, self.model)

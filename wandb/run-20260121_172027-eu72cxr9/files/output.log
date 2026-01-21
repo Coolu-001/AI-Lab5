@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/Users/caolu/Desktop/AI_Lab5/main.py", line 97, in <module>
+    train_dataloader, valid_dataloader, test_dataloader = create_dataloader(
+                                                          ^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/Desktop/AI_Lab5/load_dataset.py", line 177, in create_dataloader
+    train_datasets = MultiModalDataset(
+                     ^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/Desktop/AI_Lab5/load_dataset.py", line 65, in __init__
+    self.texts_mask = texts_mask
+                      ^^^^^^^^^^
+NameError: name 'texts_mask' is not defined

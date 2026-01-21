@@ -46,20 +46,29 @@ def Index2Label(index):
     elif index == 3:
         return "null"
 
+import re
+
 def clean_text(text):
-    """
-    清理文本数据，去除URL、换行符、多余空格等。
-
-    Args:
-        text (str): 原始文本。
-
-    Returns:
-        str: 清理后的文本。
-    """
+    # 1. 去除 URL
     text = re.sub(r"http\S+|www\S+|https\S+", "", text, flags=re.MULTILINE)
+
+    # 2. 新增：去除冒号之前的内容（如 "用户名: " 或 "地点: "）
+    # 逻辑：寻找第一个出现的中文或英文冒号，取其后的内容
+    if ':' in text or '：' in text:
+        # 使用正则表达式兼容中英文冒号，只分割一次
+        parts = re.split(r':|：', text, maxsplit=1)
+        if len(parts) > 1:
+            text = parts[1]
+
+    # 3. 处理换行符、制表符、话题标签 #
     text = text.replace("\n", " ").replace("\t", " ").replace("#", "")
+    
+    # 4. 去除表情符号和特定符号（注意保留标点有助于 RoBERTa 理解语气）
+    text = re.sub(r'[^\w\s,.\!\?]', '', text) 
+    
+    # 5. 合并多余空格并全小写
     text = re.sub(r"\s+", " ", text).strip()
-    return text
+    return text.lower()
 
 def combine_data(input_path, output_path, data_path):
     """

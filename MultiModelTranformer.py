@@ -142,15 +142,7 @@ class ImageModel(nn.Module):
         return image_features
     
 class FusionModel(nn.Module):
-    """
-    基于Transformer编码器的多模态融合模型类，用于将文本和图像特征通过Transformer编码器融合并分类。
-    """
     def __init__(self, config):
-        """
-        初始化多模态融合模型。
-        Args:
-            config: 配置对象，包含模型超参数。
-        """
         super(FusionModel, self).__init__()
         self.config = config
         self.text_model = TextModel(config)
@@ -165,32 +157,27 @@ class FusionModel(nn.Module):
             nn.Linear(config.middle_hidden_size * 3, config.output_hidden_size),
             nn.BatchNorm1d(config.output_hidden_size),
             nn.ReLU(),
-            nn.Dropout(config.fusion_dropout), # 核心抗过拟合位：建议设为 0.5
+            nn.Dropout(config.fusion_dropout), 
             nn.Linear(config.output_hidden_size, config.num_labels)
         )
-
         self.loss = nn.CrossEntropyLoss(label_smoothing=0.2)
 
-
-    def forward(self, texts, texts_mask, images, labels=None):
-        text_feature = self.text_model(texts, texts_mask)
+    # 修改参数名以对齐 DataLoader
+    def forward(self, input_ids, attention_mask, images, labels=None):
+        # 传入对应的参数
+        text_feature = self.text_model(input_ids, attention_mask)
         image_feature = self.image_model(images)
         
-        # 1. 拼接特征 [Batch, 1536]
-        # combined = torch.cat([text_feature, image_feature], dim=1).contiguous()
-        # 修改 Fusion 逻辑建议：
+        # 拼接特征
         combined = torch.cat([text_feature, image_feature, text_feature * image_feature], dim=1).contiguous()
         
-        # 2. 构造 Transformer 输入 [Batch, Seq_len=1, Dim=1536]
-        # batch_first=True 要求 Batch 在第一维
+        # 构造 Transformer 输入
         transformer_input = combined.unsqueeze(1).contiguous()
 
-        # 3. 经过 Transformer
-        # 得到的 attn_out 形状也是 [Batch, 1, 1536]
+        # 经过 Transformer
         attn_out = self.attention(transformer_input)
         
-        # 4. 还原形状并进入分类器 [Batch, 1536]
-        # 使用 reshape 代替 view，并紧跟 contiguous()，确保 backward 安全
+        # 还原形状并进入分类器
         final_feature = attn_out.reshape(combined.shape[0], -1).contiguous()
         
         outputs = self.classifier(final_feature)
@@ -201,7 +188,6 @@ class FusionModel(nn.Module):
             return pred_labels, loss
         
         return pred_labels
-    
 
 class LateFusionModel(nn.Module):
     def __init__(self, config):
@@ -209,34 +195,104 @@ class LateFusionModel(nn.Module):
         self.text_model = TextModel(config)
         self.image_model = ImageModel(config)
         
-        # 为文本和图像分别建立全连接层，输出类别数（假设是3）
         self.text_classifier = nn.Linear(config.middle_hidden_size, 3)
         self.image_classifier = nn.Linear(config.middle_hidden_size, 3)
         
-        # 可学习的融合权重（初始化为 0.5/0.5）
         self.w_text = nn.Parameter(torch.tensor(0.5), requires_grad=True)
         self.w_image = nn.Parameter(torch.tensor(0.5), requires_grad=True)
         
         self.loss = nn.CrossEntropyLoss(label_smoothing=0.2)
 
-    def forward(self, texts, texts_mask, images, labels=None):
+    # 修改参数名以对齐 DataLoader
+    def forward(self, input_ids, attention_mask, images, labels=None):
         # 分别提取特征
-        text_feat = self.text_model(texts, texts_mask) # [Batch, 768]
-        image_feat = self.image_model(images)          # [Batch, 768]
+        text_feat = self.text_model(input_ids, attention_mask) 
+        image_feat = self.image_model(images)          
         
-        # 分别得到分类预测（Logits）
+        # 分别得到预测
         text_logits = self.text_classifier(text_feat)
         image_logits = self.image_classifier(image_feat)
         
-        # 末端融合：加权平均
-        # 使用 sigmoid 确保权重在 0-1 之间且和为 1 (可选更简单的加权)
-        combined_logits = self.w_text * text_logits + self.w_image * image_logits
+        # 权重归一化
+        weights = torch.softmax(torch.stack([self.w_text, self.w_image]), dim=0)
+    
+        # 加权平均融合
+        combined_logits = weights[0] * text_logits + weights[1] * image_logits
         
         pred_labels = torch.argmax(combined_logits, dim=1)
 
         if labels is not None:
-            # 你可以同时监督三个 Loss，让分支学得更好
             loss = self.loss(combined_logits, labels)
             return pred_labels, loss
         
         return pred_labels
+    
+
+class DynamicGatedFusionModel(nn.Module):
+    def __init__(self, config):
+        super().__init__()
+        self.text_model = TextModel(config)
+        self.image_model = ImageModel(config)
+        
+        # 1. 投影层：将不同模态映射到统一特征空间，并增强非线性
+        self.text_proj = nn.Sequential(
+            nn.Linear(config.middle_hidden_size, config.middle_hidden_size),
+            nn.BatchNorm1d(config.middle_hidden_size),
+            nn.GELU(),
+            nn.Dropout(config.roberta_dropout)
+        )
+        self.image_proj = nn.Sequential(
+            nn.Linear(config.middle_hidden_size, config.middle_hidden_size),
+            nn.BatchNorm1d(config.middle_hidden_size),
+            nn.GELU(),
+            nn.Dropout(config.clip_dropout)
+        )
+
+        # 2. 动态门控网络：输入拼接特征，输出一个 0~1 之间的权重标量
+        self.gate_layer = nn.Sequential(
+            nn.Linear(config.middle_hidden_size * 2, config.middle_hidden_size // 2),
+            nn.Tanh(),
+            nn.Linear(config.middle_hidden_size // 2, 1),
+            nn.Sigmoid()
+        )
+
+        # 3. 独立分类头
+        self.text_classifier = nn.Linear(config.middle_hidden_size, 3)
+        self.image_classifier = nn.Linear(config.middle_hidden_size, 3)
+        
+        # 4. 损失函数加入 Label Smoothing
+        self.loss_fn = nn.CrossEntropyLoss(label_smoothing=0.2)
+
+    def forward(self, input_ids, attention_mask, images, labels=None):
+        # 2. 提取特征
+        t_feat = self.text_model(input_ids, attention_mask)
+        i_feat = self.image_model(images)
+        
+        # 应用投影层 (投影层能把 CLIP 和 RoBERTa 的特征拉到同一个量级)
+        t_feat_p = self.text_proj(t_feat)
+        i_feat_p = self.image_proj(i_feat)
+        
+        # 计算各自的预测
+        text_logits = self.text_classifier(t_feat_p)
+        image_logits = self.image_classifier(i_feat_p)
+        
+        # 3. 动态门控逻辑
+        gate_input = torch.cat([t_feat_p, i_feat_p], dim=-1)
+        alpha = self.gate_layer(gate_input) 
+        
+        # 记录 alpha 指标，用于观察文本增强是否让文本分支更“自信”了
+        alpha_mean = alpha.mean().item()
+        alpha_std = alpha.std().item() if alpha.size(0) > 1 else 0.0
+
+        # 4. 融合 Logits
+        # 这里是核心：alpha 动态调节两个模态的话语权
+        combined_logits = alpha * text_logits + (1 - alpha) * image_logits
+        
+        pred_labels = torch.argmax(combined_logits, dim=1)
+
+        if labels is not None:
+            loss = self.loss_fn(combined_logits, labels)
+            # 返回 pred, loss 和 门控统计信息
+            return pred_labels, loss, (alpha_mean, alpha_std)
+        
+        return pred_labels, (alpha_mean, alpha_std)

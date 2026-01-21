@@ -1,0 +1,40 @@
+Some weights of RobertaModel were not initialized from the model checkpoint at FacebookAI/roberta-base and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+ >>> Phase 1: Warming up Text Branch (Epoch 0)
+Epoch 1/50: 100%|████████████████████| 200/200 [14:56<00:00,  4.48s/it, loss=1.1362, lr=5.00e-06]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [00:56<00:00,  1.13s/it]
+ >>> Phase 1: Warming up Text Branch (Epoch 1)
+Epoch 2/50: 100%|████████████████████| 200/200 [15:27<00:00,  4.64s/it, loss=0.9850, lr=1.00e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [00:54<00:00,  1.09s/it]
+ >>> Phase 1: Warming up Text Branch (Epoch 2)
+Epoch 3/50: 100%|████████████████████| 200/200 [17:18<00:00,  5.19s/it, loss=0.8824, lr=1.50e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [01:07<00:00,  1.35s/it]
+ >>> Phase 2: Unfreezing Image Branch for Joint Training
+Epoch 4/50: 100%|████████████████████| 200/200 [19:15<00:00,  5.78s/it, loss=0.6827, lr=2.00e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [01:05<00:00,  1.32s/it]
+Epoch 5/50: 100%|████████████████████| 200/200 [19:05<00:00,  5.73s/it, loss=0.7740, lr=2.50e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [00:57<00:00,  1.16s/it]
+Epoch 6/50: 100%|████████████████████| 200/200 [19:51<00:00,  5.96s/it, loss=0.7416, lr=3.00e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [01:06<00:00,  1.32s/it]
+Epoch 7/50: 100%|████████████████████| 200/200 [18:31<00:00,  5.56s/it, loss=0.7300, lr=3.50e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [01:02<00:00,  1.25s/it]
+EarlyStopping counter: 1 out of 5
+Epoch 8/50: 100%|████████████████████| 200/200 [19:06<00:00,  5.73s/it, loss=0.7213, lr=4.00e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [01:04<00:00,  1.29s/it]
+Epoch 9/50: 100%|████████████████████| 200/200 [19:32<00:00,  5.86s/it, loss=0.6611, lr=4.50e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [01:07<00:00,  1.35s/it]
+EarlyStopping counter: 1 out of 5
+Epoch 10/50: 100%|███████████████████| 200/200 [20:10<00:00,  6.05s/it, loss=0.6214, lr=5.00e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [00:59<00:00,  1.19s/it]
+EarlyStopping counter: 2 out of 5
+Epoch 11/50: 100%|███████████████████| 200/200 [19:29<00:00,  5.85s/it, loss=0.5884, lr=4.87e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [01:05<00:00,  1.31s/it]
+EarlyStopping counter: 3 out of 5
+Epoch 12/50: 100%|███████████████████| 200/200 [14:50<00:00,  4.45s/it, loss=0.5934, lr=4.75e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [00:52<00:00,  1.06s/it]
+EarlyStopping counter: 4 out of 5
+Epoch 13/50: 100%|███████████████████| 200/200 [13:41<00:00,  4.11s/it, loss=0.5564, lr=4.63e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [00:53<00:00,  1.07s/it]
+EarlyStopping counter: 5 out of 5
+Early stopping triggered at Epoch 13
+Final Best Validation Accuracy: 0.7750

@@ -50,11 +50,9 @@ def organize_bad_cases(txt_path, image_source_dir, output_root="bad_case_analysi
 
     print(f"整理完成！共提取 {count} 张 Bad Case 图片至文件夹: {output_root}")
 
-# --- 使用示例 ---
 if __name__ == "__main__":
-    # 请根据你的实际路径修改以下两个变量
     organize_bad_cases(
-        txt_path="best_model3_bad_cases.txt", 
-        image_source_dir="dataset/data/", # 你的原始图片存放路径
+        txt_path="bad_cases.txt", 
+        image_source_dir="dataset/data/",
         output_root="bad_case_visuals"
     )

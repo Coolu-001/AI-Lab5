@@ -4,7 +4,7 @@ from config import config
 import torch
 import numpy as np
 from train_validate import trainer_validator
-from MultiModelTranformer import FusionModel, LateFusionModel
+from MultiModelTranformer import FusionModel, LateFusionModel, DynamicGatedFusionModel
 from MultiModelConcat import ConcatFusionModel
 from MultiModelCrossAttention import CrossAttentionFusionModel
 from load_dataset import create_dataloader
@@ -43,7 +43,7 @@ def parse_args():
     # 模式选择
     parser.add_argument('--text_only', action='store_true', default=False)
     parser.add_argument('--image_only', action='store_true', default=False)
-    parser.add_argument('--model', type=int, choices=[1, 2, 3, 4], default=3)
+    parser.add_argument('--model', type=int, choices=[1, 2, 3, 4, 5], default=3)
 
     return parser.parse_args()
 
@@ -89,7 +89,7 @@ if __name__ == "__main__":
     set_seed(config.seed)
     wandb.init(
             project="AILAB5",
-            name=f"MultiModel3_clip_late2_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+            name=f"MultiModel3_clip_gate2_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
             config=vars(args),
             reinit=True,
             allow_val_change=True
@@ -109,6 +109,9 @@ if __name__ == "__main__":
         model = FusionModel(config)
     elif args.model == 4:
         model = LateFusionModel(config)
+    elif args.model == 5:
+        model = DynamicGatedFusionModel(config)
     trainer = trainer_validator(train_dataloader, config, model, device)
     val_accuracy = trainer.train(train_dataloader, valid_dataloader, config.epochs, evaluate_every=1)
+    print(f"Final Best Validation Accuracy: {val_accuracy:.4f}")
     wandb.finish()

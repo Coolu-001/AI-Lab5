@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/caolu/Desktop/AI_Lab5/main.py", line 97, in <module>
+    train_dataloader, valid_dataloader, test_dataloader = create_dataloader(
+                                                          ^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/Desktop/AI_Lab5/load_dataset.py", line 176, in create_dataloader
+    train_datasets = MultiModalDataset(
+                     ^^^^^^^^^^^^^^^^^^
+TypeError: MultiModalDataset.__init__() missing 1 required positional argument: 'labels'

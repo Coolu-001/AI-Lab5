@@ -8,12 +8,45 @@ from sklearn.model_selection import train_test_split
 from process_data import read_data
 from torch.utils.data import DataLoader
 from transformers import RobertaTokenizer, CLIPProcessor
+import random
 
+class TextAugmenter:
+    def __init__(self, p_delete=0.1, p_swap=0.1):
+        self.p_delete = p_delete
+        self.p_swap = p_swap
+
+    def random_delete(self, words):
+        """随机删除词语，模拟文本缺失"""
+        if len(words) <= 2: return words
+        return [w for w in words if random.random() > self.p_delete]
+
+    def random_swap(self, words):
+        """随机交换位置，增强模型对语序抖动的鲁棒性"""
+        if len(words) <= 2: return words
+        new_words = words.copy()
+        idx1, idx2 = random.sample(range(len(words)), 2)
+        new_words[idx1], new_words[idx2] = new_words[idx2], new_words[idx1]
+        return new_words
+
+    def augment(self, text):
+        words = text.split()
+        if not words: return text
+        
+        # 随机选择一种增强方式
+        seed = random.random()
+        if seed < self.p_delete:
+            words = self.random_delete(words)
+        elif seed < self.p_delete + self.p_swap:
+            words = self.random_swap(words)
+            
+        return " ".join(words)
+    
 class MultiModalDataset(Dataset):
     """
     多模态数据集类，用于处理文本和图像数据。
     """
-    def __init__(self, guids, texts, texts_mask, images, labels, transform=None) -> None:
+    def __init__(self, guids, texts, images, labels, tokenizer, config, transform=None, mode='train') -> None:
+        super().__init__()
         """
         初始化数据集。
 
@@ -25,243 +58,135 @@ class MultiModalDataset(Dataset):
             labels (list): 标签数据列表。
         """
         super().__init__()
+        self.tokenizer = tokenizer 
+        self.config = config      
         self.guids = guids
         self.texts = texts
-        self.texts_mask = texts_mask
         self.images = images
         self.labels = labels
         self.transform = transform
+        self.augmenter = TextAugmenter()
+        self.mode = mode
     
     def __len__(self):
-        """
-        返回数据集的样本数量。
-
-        Returns:
-            int: 数据集的样本数量。
-        """
         return len(self.guids)
     
     def __getitem__(self, index):
-        """
-        根据索引获取数据集中的一个样本。
-
-        Args:
-            index (int): 样本的索引。
-
-        Returns:
-            tuple: 包含guid、文本、文本掩码、图像和标签的元组。
-        """
+        guid = self.guids[index]
         image = self.images[index]
-        if self.transform:
-            image = self.transform(image)
-        return self.guids[index], self.texts[index], self.texts_mask[index], image, self.labels[index]
-
-def collate_fn(batch):
-    """
-    自定义数据加载器的collate函数，用于将一批样本整理为模型输入格式。
-
-    Args:
-        batch (list): 一批样本，每个样本是一个元组（guid, 文本, 文本掩码, 图像, 标签）。
-
-    Returns:
-        tuple: 包含整理后的guid、文本、文本掩码、图像和标签的元组。
-    """
-    guids = [item[0] for item in batch]
-    texts = [item[1].squeeze(0) for item in batch]
-    texts_mask = [item[2].squeeze(0) for item in batch]
-    images = torch.stack([item[3] for item in batch])
-    labels = torch.LongTensor([item[4] for item in batch])
-
-    padding_texts = pad_sequence(texts, batch_first=True, padding_value=0)
-    padding_texts_mask = pad_sequence(texts_mask, batch_first=True, padding_value=0).gt(0)
-
-    return guids, padding_texts, padding_texts_mask, images, labels
-
-def resize_size(image_size):
-    """
-    计算最接近且大于等于image_size的2的幂次方值，用于调整图像大小。
-
-    Args:
-        image_size (int): 原始图像大小。
-
-    Returns:
-        int: 调整后的图像大小。
-    """
-    for i in range(20):
-        if 2 ** i >= image_size:
-            return 2 ** i
-    return image_size
-
-# def encode_text_image(original_data):
-#     """
-#     对原始数据进行编码，包括文本的tokenization和图像的预处理。
-
-#     Args:
-#         original_data (list): 原始数据列表，每个元素是一个字典，包含guid、label、text和image。
-#         mode (str): 模式，可以是"train"或"test"，用于选择不同的图像预处理方式。
-
-#     Returns:
-#         tuple: 包含编码后的guids、文本、文本掩码、图像和标签的元组。
-#     """
-#     tokenizer = RobertaTokenizer.from_pretrained(config.roberta_path)
-
-
-#     guids = []
-#     encoded_texts = []
-#     encoded_texts_mask = []
-#     encoded_images = []
-#     encoded_labels = []
-
-#     for group in original_data:
-#         guid = group["guid"]
-#         label = group["label"]
-#         text = group["text"]
-#         image = group["image"]
-
-#         guids.append(guid)
-#         tokens = tokenizer(text, return_tensors='pt', padding=True, truncation=True, max_length=config.max_seq_length)
-#         # 之前通过分位数计算得出的值作为max_seq_length
-#         encoded_texts.append(tokens["input_ids"].squeeze(0))
-#         encoded_texts_mask.append(tokens["attention_mask"].squeeze(0))
-#         encoded_images.append(image)
-#         encoded_labels.append(label)
-
-#     return guids, encoded_texts, encoded_texts_mask, encoded_images, encoded_labels
-
-def encode_text_image(original_data):
-    """
-    对原始数据进行编码，包括文本的 Roberta Tokenization 和图像的 CLIP 预处理。
-
-    Args:
-        original_data (list): 原始数据列表，每个元素是一个字典，包含 guid、label、text 和 image (PIL对象)。
-
-    Returns:
-        tuple: 包含编码后的 guids、文本 ID、注意力掩码、CLIP 处理后的图像张量和标签。
-    """
-    # 1. 初始化 Tokenizer 和 CLIP 处理器
-    tokenizer = RobertaTokenizer.from_pretrained(config.roberta_path)
-    # config.clip_path 通常为 "openai/clip-vit-base-patch32"
-    processor = CLIPProcessor.from_pretrained(config.clip_path)
-
-    guids = []
-    encoded_texts = []
-    encoded_texts_mask = []
-    encoded_images = []
-    encoded_labels = []
-
-    for group in original_data:
-        guid = group["guid"]
-        label = group["label"]
-        text = group["text"]
-        image = group["image"]
-
-        # --- 文本处理 ---
-        tokens = tokenizer(
+        text = self.texts[index]
+        label = self.labels[index]
+        if self.mode == 'train':
+            text = self.augmenter.augment(text)
+        tokens = self.tokenizer(
             text, 
             return_tensors='pt', 
-            padding='max_length', # 建议此处填充到 max_length 保证 dataloader 稳定性
+            padding='max_length', 
             truncation=True, 
-            max_length=config.max_seq_length
+            max_length=self.config.max_seq_length
         )
-        
-        # --- 图像处理 (针对 CLIP) ---
-        # CLIPProcessor 会处理 Resize (224x224), CenterCrop, 和 Normalize
-        image_inputs = processor(images=image, return_tensors="pt")
-        
-        # 存储数据
-        guids.append(guid)
-        encoded_texts.append(tokens["input_ids"].squeeze(0))
-        encoded_texts_mask.append(tokens["attention_mask"].squeeze(0))
-        # pixel_values 的形状是 [1, 3, 224, 224]，我们需要 squeeze 掉第一维
-        encoded_images.append(group["image"]) 
-        
-        encoded_labels.append(label)
+        if self.transform:
+            image = self.transform(image)
+        return guid, tokens["input_ids"].squeeze(0), tokens["attention_mask"].squeeze(0), image, label
 
-    return guids, encoded_texts, encoded_texts_mask, encoded_images, encoded_labels
+def collate_fn(batch):
+    # 1. 提取各个字段
+    guids = [item[0] for item in batch]
+    
+    # 因为 Dataset 里已经 squeeze 过了，这里直接 stack 成 [Batch_Size, Max_Length]
+    input_ids = torch.stack([item[1] for item in batch])
+    attention_mask = torch.stack([item[2] for item in batch])
+    
+    # 图像堆叠成 [Batch_Size, 3, 224, 224]
+    images = torch.stack([item[3] for item in batch])
+    
+    # 标签转为 Tensor
+    labels = torch.LongTensor([item[4] for item in batch])
+
+    # 返回 5 个变量
+    return guids, input_ids, attention_mask, images, labels
+
 
 def create_dataloader(train_data_path, test_data_path, data_path, text_only=False, image_only=False):
-    """
-    创建训练、验证和测试数据加载器，包含验证集的划分
-
-    Args:
-        train_data_path (str): 训练数据路径。
-        test_data_path (str): 测试数据路径。
-        data_path (str): 数据根路径。
-        text_only (bool, optional): 是否仅使用文本数据。默认值为False。
-        image_only (bool, optional): 是否仅使用图像数据。默认值为False。
-
-    Returns:
-        tuple: 包含训练、验证和测试数据加载器的元组。
-    """
+    # 1. 读取原始数据
     original_train_data = read_data(train_data_path, data_path, text_only, image_only)
     original_test_data = read_data(test_data_path, data_path, text_only, image_only)
-    # 获取原始训练集的所有字段
-    t_guids, t_texts, t_masks, t_images, t_labels = encode_text_image(original_train_data)
-    # 获取测试集的所有字段
-    test_inputs = encode_text_image(original_test_data)
 
-    # 2. 划分训练集和验证集
-    # train_test_split 会按顺序返回: train_x1, val_x1, train_x2, val_x2 ...
+    # 2. 准备基础数据列表（注意：此时 text 还是原始字符串/清洗后的字符串）
+    def prepare_raw_lists(data):
+        guids, texts, images, labels = [], [], [], []
+        for item in data:
+            guids.append(item["guid"])
+            # 这里调用之前定义的 clean_text 做静态预处理（去冒号、全小写等）
+            texts.append(item["text"])
+            images.append(item["image"])
+            labels.append(item["label"])
+        return guids, texts, images, labels
+
+    t_guids, t_texts, t_images, t_labels = prepare_raw_lists(original_train_data)
+    te_guids, te_texts, te_images, te_labels = prepare_raw_lists(original_test_data)
+
+    # 3. 划分训练集和验证集
+    # 这里我们只传 4 个字段，因为 mask 会在 Dataset 内部动态生成
     split_result = train_test_split(
-        t_guids, t_texts, t_masks, t_images, t_labels, 
+        t_guids, t_texts, t_images, t_labels, 
         test_size=0.2, 
         random_state=config.seed
     )
     
-    # 重新组织切分后的数据
-    train_data = [split_result[i] for i in range(0, len(split_result), 2)]
-    valid_data = [split_result[i] for i in range(1, len(split_result), 2)]
+    # 重新组织切分后的数据：[train_guids, val_guids, train_texts, val_texts, ...]
+    train_data = {
+        "guids": split_result[0],
+        "texts": split_result[2],
+        "images": split_result[4],
+        "labels": split_result[6]
+    }
+    valid_data = {
+        "guids": split_result[1],
+        "texts": split_result[3],
+        "images": split_result[5],
+        "labels": split_result[7]
+    }
     
-    # 3. 定义三套标准变换
-    # train_trans = transforms.Compose([
-    #     transforms.Resize((224, 224)),
-    #     transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),
-    #     transforms.RandomGrayscale(p=0.05),
-    #     transforms.RandomResizedCrop(224, scale=(0.8, 1.0)),
-    #     transforms.RandomHorizontalFlip(p=0.5),
-    #     transforms.ToTensor(),
-    #     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-    # ])
-
+    # 4. 定义图像变换 (保持 CLIP 专用参数)
     train_trans = transforms.Compose([
-        # 1. 稍微放大图片，为裁剪留出空间
         transforms.Resize(256), 
-        # 2. 随机裁剪到 224，这是最核心的增强，能增加位置鲁棒性
         transforms.RandomResizedCrop(224, scale=(0.9, 1.0)), 
-        # 3. 水平翻转：最稳健的增强，不会改变情感语义
         transforms.RandomHorizontalFlip(p=0.5), 
-        # 4. 转换为 Tensor
         transforms.ToTensor(),
-        # 5. !!! 重要：必须使用 CLIP 特定的归一化参数，而不是 ImageNet 的
         transforms.Normalize(
             mean=(0.48145466, 0.4578275, 0.40821073), 
             std=(0.26862954, 0.26130258, 0.27577711)
         )
     ])
-
-    # val_test_trans = transforms.Compose([
-    #     transforms.Resize((224, 224)), # 统一尺寸
-    #     transforms.ToTensor(),
-    #     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-    # ])
 
     val_test_trans = transforms.Compose([
-        # 1. 统一缩放到 224x224
         transforms.Resize((224, 224)), 
-        # 2. 转换为 Tensor
         transforms.ToTensor(),
-        # 3. 必须使用 CLIP 专用的归一化参数
         transforms.Normalize(
             mean=(0.48145466, 0.4578275, 0.40821073), 
             std=(0.26862954, 0.26130258, 0.27577711)
         )
     ])
 
-    # 4. 创建 Dataset 实例
-    train_datasets = MultiModalDataset(*train_data, transform=train_trans)
-    valid_datasets = MultiModalDataset(*valid_data, transform=val_test_trans)
-    test_datasets = MultiModalDataset(*test_inputs, transform=val_test_trans)
-    # 5. 创建 DataLoader 实例
+    # 5. 初始化 Tokenizer
+    tokenizer = RobertaTokenizer.from_pretrained(config.roberta_path)
+
+    # 6. 创建 Dataset 实例 (将 tokenizer 传入)
+    train_datasets = MultiModalDataset(
+        train_data["guids"], train_data["texts"], train_data["images"], train_data["labels"],
+        tokenizer=tokenizer, config=config, transform=train_trans, mode='train'
+    )
+    valid_datasets = MultiModalDataset(
+        valid_data["guids"], valid_data["texts"], valid_data["images"], valid_data["labels"],
+        tokenizer=tokenizer, config=config, transform=val_test_trans, mode='val'
+    )
+    test_datasets = MultiModalDataset(
+        te_guids, te_texts, te_images, te_labels,
+        tokenizer=tokenizer, config=config, transform=val_test_trans, mode='test'
+    )
+
+    # 7. 创建 DataLoader
     train_dataloader = DataLoader(
         dataset=train_datasets, 
         batch_size=config.batch_size, 
