@@ -1,0 +1,55 @@
+Some weights of RobertaModel were not initialized from the model checkpoint at FacebookAI/roberta-base and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+ >>> Phase 1: Warming up Text Branch (Epoch 0)
+Epoch 1/50: 100%|████████████████████| 100/100 [13:54<00:00,  8.35s/it, loss=1.0555, lr=5.00e-06]
+Evaluating: 100%|████████████████████████████████████████████████| 25/25 [00:57<00:00,  2.30s/it]
+Saved best model at Epoch 1 to trained_models/best_model_epoch1.pt
+ >>> Phase 1: Warming up Text Branch (Epoch 1)
+Epoch 2/50: 100%|████████████████████| 100/100 [14:00<00:00,  8.40s/it, loss=0.9938, lr=1.00e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 25/25 [00:58<00:00,  2.35s/it]
+Saved best model at Epoch 2 to trained_models/best_model_epoch2.pt
+ >>> Phase 2: Unfreezing Image Branch for Joint Training
+Epoch 3/50: 100%|████████████████████| 100/100 [15:40<00:00,  9.41s/it, loss=0.9409, lr=1.50e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 25/25 [01:01<00:00,  2.45s/it]
+Saved best model at Epoch 3 to trained_models/best_model_epoch3.pt
+Epoch 4/50: 100%|████████████████████| 100/100 [15:20<00:00,  9.21s/it, loss=0.8951, lr=2.00e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 25/25 [01:01<00:00,  2.46s/it]
+Saved best model at Epoch 4 to trained_models/best_model_epoch4.pt
+Epoch 5/50: 100%|████████████████████| 100/100 [15:27<00:00,  9.27s/it, loss=0.6895, lr=2.50e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 25/25 [01:00<00:00,  2.41s/it]
+Saved best model at Epoch 5 to trained_models/best_model_epoch5.pt
+Epoch 6/50: 100%|████████████████████| 100/100 [13:40<00:00,  8.20s/it, loss=0.6696, lr=3.00e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 25/25 [01:00<00:00,  2.43s/it]
+Epoch 7/50:   0%|                                                        | 0/100 [13:41<?, ?it/s]
+Traceback (most recent call last):
+  File "/Users/caolu/Desktop/AI_Lab5/main.py", line 120, in <module>
+    val_accuracy = trainer.train(train_dataloader, valid_dataloader, config.epochs, evaluate_every=1)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/Desktop/AI_Lab5/train_validate.py", line 109, in train
+    for batch in pbar:
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/tqdm/std.py", line 1181, in __iter__
+    for obj in iterable:
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/utils/data/dataloader.py", line 484, in __iter__
+    return self._get_iterator()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/utils/data/dataloader.py", line 415, in _get_iterator
+    return _MultiProcessingDataLoaderIter(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/utils/data/dataloader.py", line 1138, in __init__
+    w.start()
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/multiprocessing/process.py", line 121, in start
+    self._popen = self._Popen(self)
+                  ^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/multiprocessing/context.py", line 224, in _Popen
+    return _default_context.get_context().Process._Popen(process_obj)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/multiprocessing/context.py", line 288, in _Popen
+    return Popen(process_obj)
+           ^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/multiprocessing/popen_spawn_posix.py", line 32, in __init__
+    super().__init__(process_obj)
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/multiprocessing/popen_fork.py", line 19, in __init__
+    self._launch(process_obj)
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/multiprocessing/popen_spawn_posix.py", line 62, in _launch
+    f.write(fp.getbuffer())
+KeyboardInterrupt

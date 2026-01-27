@@ -9,37 +9,45 @@ from process_data import read_data
 from torch.utils.data import DataLoader
 from transformers import RobertaTokenizer, CLIPProcessor
 import random
+import os
 
-class TextAugmenter:
-    def __init__(self, p_delete=0.1, p_swap=0.1):
-        self.p_delete = p_delete
-        self.p_swap = p_swap
+import random
 
-    def random_delete(self, words):
-        """随机删除词语，模拟文本缺失"""
-        if len(words) <= 2: return words
-        return [w for w in words if random.random() > self.p_delete]
+# class TextAugmenter:
+#     def __init__(self, p_delete=0.05, p_swap=0.05): # 调低概率，防止破坏语义
+#         self.p_delete = p_delete
+#         self.p_swap = p_swap
+#         # 核心：定义情感关键词或否定词，禁止修改
+#         self.protected_words = {"not", "never", "no", "very", "but", "however"}
 
-    def random_swap(self, words):
-        """随机交换位置，增强模型对语序抖动的鲁棒性"""
-        if len(words) <= 2: return words
-        new_words = words.copy()
-        idx1, idx2 = random.sample(range(len(words)), 2)
-        new_words[idx1], new_words[idx2] = new_words[idx2], new_words[idx1]
-        return new_words
+#     def random_delete(self, words):
+#         if len(words) <= 3: return words
+#         # 仅删除不在保护列表中的词
+#         return [w for w in words if w.lower() in self.protected_words or random.random() > self.p_delete]
 
-    def augment(self, text):
-        words = text.split()
-        if not words: return text
+#     def random_swap(self, words):
+#         if len(words) <= 3: return words
+#         new_words = words.copy()
+#         # 寻找非保护词的索引进行交换
+#         candidate_indices = [i for i, w in enumerate(words) if w.lower() not in self.protected_words]
+#         if len(candidate_indices) < 2: return words
         
-        # 随机选择一种增强方式
-        seed = random.random()
-        if seed < self.p_delete:
-            words = self.random_delete(words)
-        elif seed < self.p_delete + self.p_swap:
-            words = self.random_swap(words)
+#         idx1, idx2 = random.sample(candidate_indices, 2)
+#         new_words[idx1], new_words[idx2] = new_words[idx2], new_words[idx1]
+#         return new_words
+
+#     def augment(self, text):
+#         if not text or random.random() > 0.3: # 只有30%的概率进行增强，保持数据主体稳定性
+#             return text
+        
+#         words = text.split()
+#         seed = random.random()
+#         if seed < 0.5:
+#             words = self.random_delete(words)
+#         else:
+#             words = self.random_swap(words)
             
-        return " ".join(words)
+#         return " ".join(words)
     
 class MultiModalDataset(Dataset):
     """
@@ -65,7 +73,7 @@ class MultiModalDataset(Dataset):
         self.images = images
         self.labels = labels
         self.transform = transform
-        self.augmenter = TextAugmenter()
+        #self.augmenter = TextAugmenter()
         self.mode = mode
     
     def __len__(self):
@@ -76,8 +84,8 @@ class MultiModalDataset(Dataset):
         image = self.images[index]
         text = self.texts[index]
         label = self.labels[index]
-        if self.mode == 'train':
-            text = self.augmenter.augment(text)
+        # if self.mode == 'train':
+        #     text = self.augmenter.augment(text)
         tokens = self.tokenizer(
             text, 
             return_tensors='pt', 

@@ -4,8 +4,10 @@ class config:
     test_guid_label_path = "dataset/test_without_label.txt"
     train_data_path = "dataset/train1.json"
     test_data_path = "dataset/test1.json"
-    roberta_path = "FacebookAI/roberta-base"
+    roberta_path = "roberta-base"
     clip_path = "openai/clip-vit-base-patch32"
+    output_dir = "trained_models"
+
     middle_hidden_size = 768
     image_size = 224
     seed = 42
@@ -16,7 +18,7 @@ class config:
     fixed_image_param = False
     num_labels = 3
 
-    batch_size = 16
+    batch_size = 32
     roberta_dropout = 0.15
     roberta_lr = 1e-5
 

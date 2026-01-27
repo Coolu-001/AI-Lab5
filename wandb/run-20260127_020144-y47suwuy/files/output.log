@@ -1,0 +1,39 @@
+ >>> Phase 1: Warming up Text Branch (Epoch 0)
+Epoch 1/50: 100%|████████████████████| 200/200 [14:52<00:00,  4.46s/it, loss=1.1202, lr=5.00e-06]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [00:53<00:00,  1.06s/it]
+Saved best model at Epoch 1 to trained_models/best_model_epoch1.pt
+ >>> Phase 1: Warming up Text Branch (Epoch 1)
+Epoch 2/50: 100%|████████████████████| 200/200 [13:33<00:00,  4.07s/it, loss=0.9778, lr=1.00e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [00:53<00:00,  1.06s/it]
+Saved best model at Epoch 2 to trained_models/best_model_epoch2.pt
+ >>> Phase 1: Warming up Text Branch (Epoch 2)
+Epoch 3/50: 100%|████████████████████| 200/200 [13:43<00:00,  4.12s/it, loss=0.9124, lr=1.50e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [00:54<00:00,  1.09s/it]
+Saved best model at Epoch 3 to trained_models/best_model_epoch3.pt
+ >>> Phase 2: Unfreezing Image Branch for Joint Training
+Epoch 4/50: 100%|████████████████████| 200/200 [14:02<00:00,  4.21s/it, loss=0.6923, lr=2.00e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [00:54<00:00,  1.09s/it]
+Saved best model at Epoch 4 to trained_models/best_model_epoch4.pt
+Epoch 5/50: 100%|████████████████████| 200/200 [14:09<00:00,  4.25s/it, loss=0.7720, lr=2.50e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [00:56<00:00,  1.12s/it]
+EarlyStopping counter: 1 out of 5
+Epoch 6/50: 100%|████████████████████| 200/200 [14:36<00:00,  4.38s/it, loss=0.7071, lr=3.00e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [01:01<00:00,  1.23s/it]
+Saved best model at Epoch 6 to trained_models/best_model_epoch6.pt
+Epoch 7/50: 100%|████████████████████| 200/200 [15:00<00:00,  4.50s/it, loss=0.6966, lr=3.50e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [01:00<00:00,  1.22s/it]
+EarlyStopping counter: 1 out of 5
+Epoch 8/50: 100%|████████████████████| 200/200 [15:15<00:00,  4.58s/it, loss=0.7063, lr=4.00e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [00:55<00:00,  1.12s/it]
+EarlyStopping counter: 2 out of 5
+Epoch 9/50: 100%|████████████████████| 200/200 [14:14<00:00,  4.27s/it, loss=0.6811, lr=4.50e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [00:55<00:00,  1.11s/it]
+EarlyStopping counter: 3 out of 5
+Epoch 10/50: 100%|███████████████████| 200/200 [13:52<00:00,  4.16s/it, loss=0.6195, lr=5.00e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [00:53<00:00,  1.06s/it]
+EarlyStopping counter: 4 out of 5
+Epoch 11/50: 100%|███████████████████| 200/200 [14:59<00:00,  4.50s/it, loss=0.6341, lr=4.87e-05]
+Evaluating: 100%|████████████████████████████████████████████████| 50/50 [00:57<00:00,  1.16s/it]
+EarlyStopping counter: 5 out of 5
+Early stopping triggered at Epoch 11
+Final Best Validation Accuracy: 0.7738

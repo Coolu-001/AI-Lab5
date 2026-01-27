@@ -4,9 +4,7 @@ from config import config
 import torch
 import numpy as np
 from train_validate import trainer_validator
-from MultiModelTranformer import FusionModel, LateFusionModel, DynamicGatedFusionModel
-from MultiModelConcat import ConcatFusionModel
-from MultiModelCrossAttention import CrossAttentionFusionModel
+from FusionModels import TransformerFusionModel, LateFusionModel, DynamicGatedFusionModel, ConcatFusionModel,CrossAttentionFusionModel
 from load_dataset import create_dataloader
 import wandb
 from datetime import datetime
@@ -22,13 +20,13 @@ def parse_args():
     parser.add_argument('--batch_size', type=int, default=16, help='Batch size')
     
     # RoBERTa 参数保持现状
-    parser.add_argument('--roberta_dropout', type=float, default=0.3, help='Dropout for RoBERTa')
+    parser.add_argument('--roberta_dropout', type=float, default=0.4, help='Dropout for RoBERTa')
     parser.add_argument('--roberta_lr', type=float, default=1e-5, help='LR for RoBERTa')
     
     # !!! CLIP 关键修改
     parser.add_argument('--middle_hidden_size', type=int, default=768, help='Must be 768 for CLIP-ViT-Base')
-    parser.add_argument('--clip_lr', type=float, default=5e-7, help='Very small LR for CLIP fine-tuning')
-    parser.add_argument('--clip_dropout', type=float, default=0.15, help='Dropout rate for CLIP feature linear layer')
+    parser.add_argument('--clip_lr', type=float, default=1e-6, help='Very small LR for CLIP fine-tuning')
+    parser.add_argument('--clip_dropout', type=float, default=0.4, help='Dropout rate for CLIP feature linear layer')
     
     # 融合层与注意力机制
     parser.add_argument('--attention_nheads', type=int, default=8, help='Number of attention heads')
@@ -37,7 +35,7 @@ def parse_args():
     parser.add_argument('--output_hidden_size', type=int, default=256, help='Hidden size for output')
     
     # 优化器
-    parser.add_argument('--weight_decay', type=float, default=1e-2, help='Weight decay')
+    parser.add_argument('--weight_decay', type=float, default=0.1, help='Weight decay')
     parser.add_argument('--lr', type=float, default=5e-5, help='General learning rate')
     
     # 模式选择
@@ -54,7 +52,14 @@ def parse_args():
 # else:
 #     device = torch.device("cpu")
 device = torch.device("cpu")
-
+def count_parameters(model):
+    # 计算所有参数
+    total_params = sum(p.numel() for p in model.parameters())
+    # 计算开启了梯度更新的参数（即未被冻结的）
+    trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    
+    # 转换为百万 (M) 为单位，更符合科研表达
+    return total_params / 1e6, trainable_params / 1e6
 def set_seed(seed):
     """
     设置随机种子，确保实验的可重复性。
@@ -89,7 +94,7 @@ if __name__ == "__main__":
     set_seed(config.seed)
     wandb.init(
             project="AILAB5",
-            name=f"MultiModel3_clip_gate2_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+            name=f"最终实验-消融text only{datetime.now().strftime('%Y%m%d_%H%M%S')}",
             config=vars(args),
             reinit=True,
             allow_val_change=True
@@ -106,7 +111,7 @@ if __name__ == "__main__":
     elif args.model == 2:
         model = CrossAttentionFusionModel(config)
     elif args.model == 3:
-        model = FusionModel(config)
+        model = TransformerFusionModel(config)
     elif args.model == 4:
         model = LateFusionModel(config)
     elif args.model == 5:

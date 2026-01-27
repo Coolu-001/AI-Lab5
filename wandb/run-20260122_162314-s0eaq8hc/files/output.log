@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/Users/caolu/Desktop/AI_Lab5/main.py", line 97, in <module>
+    train_dataloader, valid_dataloader, test_dataloader = create_dataloader(
+                                                          ^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/Desktop/AI_Lab5/load_dataset.py", line 112, in create_dataloader
+    original_train_data = read_data(train_data_path, data_path, text_only, image_only)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/Desktop/AI_Lab5/process_data.py", line 137, in read_data
+    text = tokenizer.pad_token * config
+           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~
+TypeError: can't multiply sequence by non-int of type 'type'

@@ -1,0 +1,22 @@
+{
+  "os": "macOS-15.6.1-arm64-arm-64bit",
+  "python": "CPython 3.11.14",
+  "startedAt": "2026-01-22T08:23:14.015821Z",
+  "args": [
+    "--model",
+    "5",
+    "--image_only"
+  ],
+  "program": "/Users/caolu/Desktop/AI_Lab5/main.py",
+  "codePath": "main.py",
+  "codePathLocal": "main.py",
+  "git": {
+    "remote": "git@github.com:Coolu-001/AI-Lab5.git",
+    "commit": "54f98cf0b6438b13bbdb8caa74cee9d766cd269f"
+  },
+  "email": "coolu0811@163.com",
+  "root": "/Users/caolu/Desktop/AI_Lab5",
+  "host": "coolus-MacBook-Air-2.local",
+  "executable": "/Users/caolu/opt/anaconda3/envs/multi/bin/python",
+  "writerId": "ssiw8anh5vqhd44y32jo42fsr4jqc8s6"
+}

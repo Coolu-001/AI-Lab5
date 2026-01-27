@@ -8,6 +8,8 @@ import torch
 import numpy as np
 from transformers import RobertaTokenizer
 
+tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
+
 def Label2Index(label):
     """
     将标签字符串转换为索引。
@@ -132,7 +134,7 @@ def read_data(file_path, data_path, text_only=False, image_only=False):
                 image.load()
             
             if image_only:
-                text = ""
+                text = tokenizer.pad_token * config.max_seq_length          
             
             data.append({
                 "guid": guid,

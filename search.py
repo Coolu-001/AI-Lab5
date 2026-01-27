@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 from train_validate import trainer_validator
-from MultiModelTranformer import FusionModel
+from FusionModels import TransformerFusionModel, LateFusionModel, DynamicGatedFusionModel, ConcatFusionModel,CrossAttentionFusionModel
 from load_dataset import create_dataloader
 import wandb
 from datetime import datetime
@@ -79,11 +79,10 @@ if __name__ == "__main__":
 
         config.batch_size = hyperparameters["batch_size"]
         config.roberta_dropout = hyperparameters["dropout"]
-        config.resnet_dropout = hyperparameters["dropout"]
         config.attention_dropout = hyperparameters["dropout"]
         config.fusion_dropout = hyperparameters["dropout"]
         config.roberta_lr = hyperparameters["lr"]
-        config.resnet_lr = hyperparameters["lr"]
+        config.clip_lr = hyperparameters["lr"]
         config.lr = hyperparameters["lr"]
         config.output_hidden_size = hyperparameters["output_hidden_size"]
         config.middle_hidden_size = hyperparameters["output_hidden_size"]
@@ -103,7 +102,7 @@ if __name__ == "__main__":
             text_only=False, 
             image_only=False
         )
-        model = FusionModel(config)
+        model = DynamicGatedFusionModel(config)
         trainer = trainer_validator(config, model, device)
         val_accuracy = trainer.train(train_dataloader, valid_dataloader, config.epochs, evaluate_every=1)
         if val_accuracy > best_accuracy:

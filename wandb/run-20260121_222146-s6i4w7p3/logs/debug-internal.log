@@ -1,0 +1,19 @@
+{"time":"2026-01-21T22:21:47.03919+08:00","level":"INFO","msg":"stream: starting","core version":"0.24.0"}
+{"time":"2026-01-21T22:21:53.196841+08:00","level":"INFO","msg":"stream: created new stream","id":"s6i4w7p3"}
+{"time":"2026-01-21T22:21:53.197687+08:00","level":"INFO","msg":"handler: started","stream_id":"s6i4w7p3"}
+{"time":"2026-01-21T22:21:53.198514+08:00","level":"INFO","msg":"writer: started","stream_id":"s6i4w7p3"}
+{"time":"2026-01-21T22:21:53.198725+08:00","level":"INFO","msg":"stream: started","id":"s6i4w7p3"}
+{"time":"2026-01-21T22:21:53.199206+08:00","level":"INFO","msg":"sender: started","stream_id":"s6i4w7p3"}
+{"time":"2026-01-21T22:23:18.125419+08:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/coolu0811-east-china-normal-university/AILAB5/s6i4w7p3/file_stream\": read tcp 192.168.31.187:50643->35.186.228.49:443: read: connection reset by peer"}
+{"time":"2026-01-21T22:23:33.230572+08:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/coolu0811-east-china-normal-university/AILAB5/s6i4w7p3/file_stream\": read tcp 192.168.31.187:50689->35.186.228.49:443: read: connection reset by peer"}
+{"time":"2026-01-21T22:37:18.237607+08:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/coolu0811-east-china-normal-university/AILAB5/s6i4w7p3/file_stream\": read tcp 192.168.31.187:50690->35.186.228.49:443: read: connection reset by peer"}
+{"time":"2026-01-21T23:45:26.559547+08:00","level":"INFO","msg":"api: retrying HTTP error","status":500,"url":"https://api.wandb.ai/files/coolu0811-east-china-normal-university/AILAB5/s6i4w7p3/file_stream","body":"{\"error\":\"context deadline exceeded\"}"}
+{"time":"2026-01-21T23:48:43.55537+08:00","level":"INFO","msg":"api: retrying HTTP error","status":500,"url":"https://api.wandb.ai/files/coolu0811-east-china-normal-university/AILAB5/s6i4w7p3/file_stream","body":"{\"error\":\"context deadline exceeded\"}"}
+{"time":"2026-01-22T01:18:23.25132+08:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)"}
+{"time":"2026-01-22T01:18:23.299095+08:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)"}
+{"time":"2026-01-22T01:18:29.644768+08:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2026-01-22T01:18:30.460578+08:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2026-01-22T01:18:30.482007+08:00","level":"INFO","msg":"stream: closing","id":"s6i4w7p3"}
+{"time":"2026-01-22T01:18:30.482411+08:00","level":"INFO","msg":"handler: closed","stream_id":"s6i4w7p3"}
+{"time":"2026-01-22T01:18:30.482708+08:00","level":"INFO","msg":"sender: closed","stream_id":"s6i4w7p3"}
+{"time":"2026-01-22T01:18:30.482745+08:00","level":"INFO","msg":"stream: closed","id":"s6i4w7p3"}

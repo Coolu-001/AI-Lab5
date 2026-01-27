@@ -1,0 +1,55 @@
+{
+  "os": "macOS-15.6.1-arm64-arm-64bit",
+  "python": "CPython 3.11.14",
+  "startedAt": "2026-01-21T14:21:46.769433Z",
+  "args": [
+    "--roberta_lr",
+    "2e-5",
+    "--clip_lr",
+    "1e-6",
+    "--lr",
+    "5e-5",
+    "--roberta_dropout",
+    "0.4",
+    "--clip_dropout",
+    "0.4",
+    "--fusion_dropout",
+    "0.5",
+    "--weight_decay",
+    "0.05",
+    "--model",
+    "5"
+  ],
+  "program": "/Users/caolu/Desktop/AI_Lab5/main.py",
+  "codePath": "main.py",
+  "codePathLocal": "main.py",
+  "git": {
+    "remote": "git@github.com:Coolu-001/AI-Lab5.git",
+    "commit": "54f98cf0b6438b13bbdb8caa74cee9d766cd269f"
+  },
+  "email": "coolu0811@163.com",
+  "root": "/Users/caolu/Desktop/AI_Lab5",
+  "host": "coolus-MacBook-Air-2.local",
+  "executable": "/Users/caolu/opt/anaconda3/envs/multi/bin/python",
+  "cpu_count": 8,
+  "cpu_count_logical": 8,
+  "disk": {
+    "/": {
+      "total": "494384795648",
+      "used": "387940626432"
+    }
+  },
+  "memory": {
+    "total": "8589934592"
+  },
+  "apple": {
+    "name": "Apple M1",
+    "ecpuCores": 4,
+    "pcpuCores": 4,
+    "gpuCores": 8,
+    "memoryGb": 8,
+    "swapTotalBytes": "5368709120",
+    "ramTotalBytes": "8589934592"
+  },
+  "writerId": "s607glsy0wcnkw0uasgx1rgxaa87d46n"
+}
