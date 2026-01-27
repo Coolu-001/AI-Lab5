@@ -4,10 +4,7 @@ from config import config
 import torch
 import numpy as np
 from train_validate import trainer_validator
-from MultiModelTranformer import FusionModel
 from MultiModelLateFusion import LateFusionModel
-from MultiModelConcat import ConcatFusionModel
-from MultiModelCrossAttention import CrossAttentionFusionModel
 from load_dataset import create_dataloader
 import wandb
 from datetime import datetime
@@ -23,13 +20,13 @@ def parse_args():
     parser.add_argument('--batch_size', type=int, default=16, help='Batch size')
     
     # RoBERTa 参数保持现状
-    parser.add_argument('--roberta_dropout', type=float, default=0.3, help='Dropout for RoBERTa')
-    parser.add_argument('--roberta_lr', type=float, default=1e-5, help='LR for RoBERTa')
+    parser.add_argument('--roberta_dropout', type=float, default=0.4, help='Dropout for RoBERTa')
+    parser.add_argument('--roberta_lr', type=float, default=2e-5, help='LR for RoBERTa')
     
     # !!! CLIP 关键修改
     parser.add_argument('--middle_hidden_size', type=int, default=768, help='Must be 768 for CLIP-ViT-Base')
-    parser.add_argument('--clip_lr', type=float, default=5e-7, help='Very small LR for CLIP fine-tuning')
-    parser.add_argument('--clip_dropout', type=float, default=0.15, help='Dropout rate for CLIP feature linear layer')
+    parser.add_argument('--clip_lr', type=float, default=1e-6, help='Very small LR for CLIP fine-tuning')
+    parser.add_argument('--clip_dropout', type=float, default=0.4, help='Dropout rate for CLIP feature linear layer')
     
     # 融合层与注意力机制
     parser.add_argument('--attention_nheads', type=int, default=8, help='Number of attention heads')
@@ -38,13 +35,13 @@ def parse_args():
     parser.add_argument('--output_hidden_size', type=int, default=256, help='Hidden size for output')
     
     # 优化器
-    parser.add_argument('--weight_decay', type=float, default=1e-2, help='Weight decay')
-    parser.add_argument('--lr', type=float, default=5e-5, help='General learning rate')
+    parser.add_argument('--weight_decay', type=float, default=0.1, help='Weight decay')
+    parser.add_argument('--lr', type=float, default=1e-4, help='General learning rate')
     
     # 模式选择
     parser.add_argument('--text_only', action='store_true', default=False)
     parser.add_argument('--image_only', action='store_true', default=False)
-    parser.add_argument('--model', type=int, choices=[1, 2, 3, 4], default=3)
+    # parser.add_argument('--model', type=int, choices=[1, 2, 3, 4], default=3)
 
     return parser.parse_args()
 
@@ -90,7 +87,7 @@ if __name__ == "__main__":
     set_seed(config.seed)
     wandb.init(
             project="AILAB5",
-            name=f"MultiModel3_clip_late2_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+            name=f"最终实验_late fusion model{datetime.now().strftime('%Y%m%d_%H%M%S')}",
             config=vars(args),
             reinit=True,
             allow_val_change=True
@@ -102,14 +99,7 @@ if __name__ == "__main__":
         text_only=args.text_only, 
         image_only=args.image_only
     )
-    if args.model == 1:
-        model = ConcatFusionModel(config)
-    elif args.model == 2:
-        model = CrossAttentionFusionModel(config)
-    elif args.model == 3:
-        model = FusionModel(config)
-    elif args.model == 4:
-        model = LateFusionModel(config)
+    model = LateFusionModel(config)
     trainer = trainer_validator(train_dataloader, config, model, device)
     val_accuracy = trainer.train(train_dataloader, valid_dataloader, config.epochs, evaluate_every=1)
     wandb.finish()

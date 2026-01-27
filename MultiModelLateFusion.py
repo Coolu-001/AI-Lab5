@@ -3,51 +3,61 @@ import torch.nn as nn
 from transformers import RobertaModel
 from torchvision import models
 from transformers import CLIPVisionModel, CLIPProcessor
+import torch.nn.functional as F
 
 class TextModel(nn.Module):
-    """
-    文本模型类，用于处理文本数据。
-    """
     def __init__(self, config):
-        """
-        初始化文本模型。
-
-        Args:
-            config: 配置对象，包含模型超参数。
-        """
-        super(TextModel, self).__init__()
-        self.config = config
-        self.roberta = RobertaModel.from_pretrained(config.roberta_path)
-        self.transform = nn.Sequential(
-            nn.Linear(self.roberta.config.hidden_size, config.middle_hidden_size),
-            nn.BatchNorm1d(config.middle_hidden_size), # 平滑文本特征波动
-            nn.ReLU(),
-            nn.Dropout(config.roberta_dropout) # 建议 config 中设为 0.3
+        super().__init__()
+        # 加载预训练模型，开启 hidden_states 输出
+        self.roberta = RobertaModel.from_pretrained(
+            config.roberta_path, 
+            output_hidden_states=True 
         )
 
-        for param in self.roberta.parameters():
-            if config.fixed_text_param:
-                param.requires_grad = False
-            else:
-                param.requires_grad = True
-    
+        # 1. 自动学习最后 4 层的权重分配
+        self.layer_weights = nn.Parameter(torch.ones(4))
+        
+        # 2. 这里的 transform 层增加了维度适配
+        # 考虑到我们将 CLS 和 Mean Pooling 拼接，输入维度变为 hidden_size * 2
+        self.transform = nn.Sequential(
+            nn.Linear(self.roberta.config.hidden_size * 2, config.middle_hidden_size),
+            nn.LayerNorm(config.middle_hidden_size),
+            nn.GELU(),
+            nn.Dropout(config.roberta_dropout)
+        )
+
+        # 根据配置决定是否冻结预训练层
+        for p in self.roberta.parameters():
+            p.requires_grad = not config.fixed_text_param
+
     def forward(self, input_ids, attention_mask):
-        """
-        前向传播函数，处理文本输入。
+        outputs = self.roberta(
+            input_ids=input_ids,
+            attention_mask=attention_mask,
+            return_dict=True
+        )
 
-        Args:
-            input_ids (torch.Tensor): 输入文本的token IDs。
-            attention_mask (torch.Tensor): 注意力掩码，用于指示哪些token是有效的。
+        # --- 核心修改：多层特征融合 ---
+        # 提取最后 4 层 [4, Batch, Seq, Hidden]
+        last_four_layers = torch.stack(outputs.hidden_states[-4:], dim=0) 
+        
+        # 计算归一化权重并进行加权求和
+        weights = F.softmax(self.layer_weights, dim=0).view(-1, 1, 1, 1)
+        weighted_feat = (last_four_layers * weights).sum(0) 
 
-        Returns:
-            torch.Tensor: 文本特征。
-        """
-        outputs = self.roberta(input_ids=input_ids, attention_mask=attention_mask)
-        # 提取 pooler_output 并强制重新排列内存
-        feat = outputs["pooler_output"].contiguous()
-        # 经过你定义的 transform (Linear + ReLU)
-        return self.transform(feat).contiguous()
-    
+        # --- 特征池化 ---
+        # 1. CLS Token 特征：代表整句全局语义
+        cls_feat = weighted_feat[:, 0, :] 
+        
+        # 2. Weighted Mean Pooling：代表词义平均分布
+        mask = attention_mask.unsqueeze(-1).float()
+        mean_feat = (weighted_feat * mask).sum(dim=1) / mask.sum(dim=1).clamp(min=1e-6)
+        
+        # --- 拼接与输出 ---
+        # 拼接后的维度是 hidden_size * 2
+        combined_feat = torch.cat([cls_feat, mean_feat], dim=1)
+        
+        return self.transform(combined_feat)
 
 class ImageModel(nn.Module):
     """
@@ -87,7 +97,6 @@ class ImageModel(nn.Module):
         image_features = self.transform(outputs.pooler_output).contiguous()
         return image_features
     
-    
 
 class LateFusionModel(nn.Module):
     def __init__(self, config):
@@ -95,33 +104,33 @@ class LateFusionModel(nn.Module):
         self.text_model = TextModel(config)
         self.image_model = ImageModel(config)
         
-        # 为文本和图像分别建立全连接层，输出类别数（假设是3）
         self.text_classifier = nn.Linear(config.middle_hidden_size, 3)
         self.image_classifier = nn.Linear(config.middle_hidden_size, 3)
         
-        # 可学习的融合权重（初始化为 0.5/0.5）
         self.w_text = nn.Parameter(torch.tensor(0.5), requires_grad=True)
         self.w_image = nn.Parameter(torch.tensor(0.5), requires_grad=True)
         
         self.loss = nn.CrossEntropyLoss(label_smoothing=0.2)
 
-    def forward(self, texts, texts_mask, images, labels=None):
+    # 修改参数名以对齐 DataLoader
+    def forward(self, input_ids, attention_mask, images, labels=None):
         # 分别提取特征
-        text_feat = self.text_model(texts, texts_mask) # [Batch, 768]
-        image_feat = self.image_model(images)          # [Batch, 768]
+        text_feat = self.text_model(input_ids, attention_mask) 
+        image_feat = self.image_model(images)          
         
-        # 分别得到分类预测（Logits）
+        # 分别得到预测
         text_logits = self.text_classifier(text_feat)
         image_logits = self.image_classifier(image_feat)
         
-        # 末端融合：加权平均
-        # 使用 sigmoid 确保权重在 0-1 之间且和为 1 (可选更简单的加权)
-        combined_logits = self.w_text * text_logits + self.w_image * image_logits
+        # 权重归一化
+        weights = torch.softmax(torch.stack([self.w_text, self.w_image]), dim=0)
+    
+        # 加权平均融合
+        combined_logits = weights[0] * text_logits + weights[1] * image_logits
         
         pred_labels = torch.argmax(combined_logits, dim=1)
 
         if labels is not None:
-            # 你可以同时监督三个 Loss，让分支学得更好
             loss = self.loss(combined_logits, labels)
             return pred_labels, loss
         

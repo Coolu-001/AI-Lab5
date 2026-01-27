@@ -1,0 +1,41 @@
+{
+  "os": "macOS-15.6.1-arm64-arm-64bit",
+  "python": "CPython 3.11.14",
+  "startedAt": "2026-01-26T00:00:56.342310Z",
+  "args": [
+    "--model",
+    "4"
+  ],
+  "program": "/Users/caolu/Desktop/AI-Lab5-clip-latefusion/main.py",
+  "codePath": "main.py",
+  "codePathLocal": "main.py",
+  "git": {
+    "remote": "https://github.com/Coolu-001/AI-Lab5.git",
+    "commit": "915e0e01fe71251dc9bfbea1f423effe4dd180fb"
+  },
+  "email": "coolu0811@163.com",
+  "root": "/Users/caolu/Desktop/AI-Lab5-clip-latefusion",
+  "host": "coolus-MacBook-Air-2.local",
+  "executable": "/Users/caolu/opt/anaconda3/envs/multi/bin/python",
+  "cpu_count": 8,
+  "cpu_count_logical": 8,
+  "disk": {
+    "/": {
+      "total": "494384795648",
+      "used": "408191475712"
+    }
+  },
+  "memory": {
+    "total": "8589934592"
+  },
+  "apple": {
+    "name": "Apple M1",
+    "ecpuCores": 4,
+    "pcpuCores": 4,
+    "gpuCores": 8,
+    "memoryGb": 8,
+    "swapTotalBytes": "3221225472",
+    "ramTotalBytes": "8589934592"
+  },
+  "writerId": "098w2wqmx48mfbfyfcqs7vemdn7coqs0"
+}
