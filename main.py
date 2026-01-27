@@ -2,9 +2,7 @@ from config import config
 import torch
 import numpy as np
 from train_validate import trainer_validator
-from MultiModelTranformer import FusionModel
-from MultiModelConcat import ConcatFusionModel
-from MultiModelCrossAttention import CrossAttentionFusionModel
+from FusionModels import FusionModel, ConcatFusionModel,CrossAttentionFusionModel
 from load_dataset import create_dataloader
 import wandb
 from datetime import datetime

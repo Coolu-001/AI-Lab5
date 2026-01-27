@@ -98,6 +98,55 @@ class ImageModel(nn.Module):
         outputs = self.resnet(images)
         outputs = self.transform(outputs)
         return outputs
+    
+class ConcatFusionModel(nn.Module):
+    """
+    多模态融合模型类，用于将文本和图像特征进行拼接并分类。
+    """
+    def __init__(self, config):
+        """
+        初始化多模态融合模型。
+
+        Args:
+            config: 配置对象，包含模型超参数。
+        """
+        super(ConcatFusionModel, self).__init__()
+        self.config = config
+        self.text_model = TextModel(config)
+        self.image_model = ImageModel(config)
+        self.classifier = nn.Sequential(
+            nn.Dropout(config.fusion_dropout),
+            nn.Linear(config.middle_hidden_size * 2, config.output_hidden_size),
+            nn.ReLU(inplace=True),
+            nn.Dropout(config.fusion_dropout),
+            nn.Linear(config.output_hidden_size, config.num_labels)
+        )
+        self.loss = nn.CrossEntropyLoss()
+
+    def forward(self, texts, texts_mask, images, labels):
+        """
+        前向传播函数，处理文本和图像输入。
+
+        Args:
+            texts (torch.Tensor): 输入文本的token IDs。
+            texts_mask (torch.Tensor): 文本的注意力掩码。
+            images (torch.Tensor): 输入图像。
+            labels (torch.Tensor): 真实标签（可选，用于训练时计算损失）。
+
+        Returns:
+            tuple: 包含预测标签和损失（如果提供了标签）。
+        """
+        text_feature = self.text_model(texts, texts_mask)
+        image_feature = self.image_model(images)
+        text_image_feature = torch.cat([text_feature, image_feature], dim=1)
+        outputs = self.classifier(text_image_feature)
+        pred_labels = torch.argmax(outputs, dim=1)
+
+        if self.training or labels is not None:
+            loss = self.loss(outputs, labels)
+            return pred_labels, loss
+        else:
+            return pred_labels
 
 class CrossAttentionFusionModel(nn.Module):
     """
@@ -166,6 +215,61 @@ class CrossAttentionFusionModel(nn.Module):
         fused_feature = torch.cat([text_attention_output, image_attention_output], dim=1)
         
         outputs = self.classifier(fused_feature)
+        pred_labels = torch.argmax(outputs, dim=1)
+
+        if self.training or labels is not None:
+            loss = self.loss(outputs, labels)
+            return pred_labels, loss
+        else:
+            return pred_labels
+        
+class FusionModel(nn.Module):
+    """
+    基于Transformer编码器的多模态融合模型类，用于将文本和图像特征通过Transformer编码器融合并分类。
+    """
+    def __init__(self, config):
+        """
+        初始化多模态融合模型。
+
+        Args:
+            config: 配置对象，包含模型超参数。
+        """
+        super(FusionModel, self).__init__()
+        self.config = config
+        self.text_model = TextModel(config)
+        self.image_model = ImageModel(config)
+        self.attention = nn.TransformerEncoderLayer(
+            d_model=config.middle_hidden_size * 2, 
+            nhead=config.attention_nheads, 
+            dropout=config.attention_dropout
+        )
+        self.classifier = nn.Sequential(
+            nn.Dropout(config.fusion_dropout),
+            nn.Linear(config.middle_hidden_size * 2, config.output_hidden_size),
+            nn.ReLU(inplace=True),
+            nn.Dropout(config.fusion_dropout),
+            nn.Linear(config.output_hidden_size, config.num_labels)
+        )
+
+        self.loss = nn.CrossEntropyLoss()
+
+    def forward(self, texts, texts_mask, images, labels):
+        """
+        前向传播函数，处理文本和图像输入，并通过Transformer编码器进行特征融合。
+
+        Args:
+            texts (torch.Tensor): 输入文本的token IDs。
+            texts_mask (torch.Tensor): 文本的注意力掩码。
+            images (torch.Tensor): 输入图像。
+            labels (torch.Tensor): 真实标签（可选，用于训练时计算损失）。
+
+        Returns:
+            tuple: 包含预测标签和损失（如果提供了标签）。
+        """
+        text_feature = self.text_model(texts, texts_mask)
+        image_feature = self.image_model(images)
+        text_image_attention = self.attention(torch.cat([text_feature.unsqueeze(0), image_feature.unsqueeze(0)], dim=2)).squeeze()
+        outputs = self.classifier(text_image_attention)
         pred_labels = torch.argmax(outputs, dim=1)
 
         if self.training or labels is not None:
