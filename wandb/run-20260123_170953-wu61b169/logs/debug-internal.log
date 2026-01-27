@@ -1,0 +1,12 @@
+{"time":"2026-01-23T17:09:53.571834+08:00","level":"INFO","msg":"stream: starting","core version":"0.24.0"}
+{"time":"2026-01-23T17:10:23.686209+08:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)"}
+{"time":"2026-01-23T17:10:26.249819+08:00","level":"INFO","msg":"stream: created new stream","id":"wu61b169"}
+{"time":"2026-01-23T17:10:26.250613+08:00","level":"INFO","msg":"handler: started","stream_id":"wu61b169"}
+{"time":"2026-01-23T17:10:26.251404+08:00","level":"INFO","msg":"writer: started","stream_id":"wu61b169"}
+{"time":"2026-01-23T17:10:26.251709+08:00","level":"INFO","msg":"stream: started","id":"wu61b169"}
+{"time":"2026-01-23T17:10:26.251738+08:00","level":"INFO","msg":"sender: started","stream_id":"wu61b169"}
+{"time":"2026-01-23T17:10:26.909426+08:00","level":"INFO","msg":"stream: closing","id":"wu61b169"}
+{"time":"2026-01-23T17:10:30.766217+08:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2026-01-23T17:10:58.614904+08:00","level":"INFO","msg":"handler: closed","stream_id":"wu61b169"}
+{"time":"2026-01-23T17:10:58.615314+08:00","level":"INFO","msg":"sender: closed","stream_id":"wu61b169"}
+{"time":"2026-01-23T17:10:58.615329+08:00","level":"INFO","msg":"stream: closed","id":"wu61b169"}

@@ -1,0 +1,78 @@
+_wandb:
+    value:
+        cli_version: 0.24.0
+        e:
+            osy4t2y6eyqy1m6zgkrdehodmk40ffns:
+                args:
+                    - --model
+                    - "1"
+                codePath: main.py
+                codePathLocal: main.py
+                executable: /Users/caolu/opt/anaconda3/envs/multi/bin/python
+                git:
+                    commit: 915e0e01fe71251dc9bfbea1f423effe4dd180fb
+                    remote: https://github.com/Coolu-001/AI-Lab5.git
+                host: coolus-Air-2.lan
+                os: macOS-15.6.1-arm64-arm-64bit
+                program: /Users/caolu/Desktop/AI-Lab5-clip-base3/main.py
+                python: CPython 3.11.14
+                root: /Users/caolu/Desktop/AI-Lab5-clip-base3
+                startedAt: "2026-01-23T09:09:53.279165Z"
+                writerId: osy4t2y6eyqy1m6zgkrdehodmk40ffns
+        m: []
+        python_version: 3.11.14
+        t:
+            "1":
+                - 1
+                - 5
+                - 11
+                - 41
+                - 49
+                - 53
+            "2":
+                - 1
+                - 5
+                - 11
+                - 41
+                - 49
+                - 53
+            "3":
+                - 13
+                - 16
+            "4": 3.11.14
+            "5": 0.24.0
+            "6": 4.47.1
+            "10":
+                - 20
+            "12": 0.24.0
+            "13": darwin-arm64
+attention_dropout:
+    value: 0.4
+attention_nheads:
+    value: 8
+batch_size:
+    value: 16
+clip_dropout:
+    value: 0.4
+clip_lr:
+    value: 1e-06
+fusion_dropout:
+    value: 0.5
+image_only:
+    value: false
+lr:
+    value: 5e-05
+middle_hidden_size:
+    value: 768
+model:
+    value: 1
+output_hidden_size:
+    value: 256
+roberta_dropout:
+    value: 0.4
+roberta_lr:
+    value: 2e-05
+text_only:
+    value: false
+weight_decay:
+    value: 0.05

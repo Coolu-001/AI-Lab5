@@ -1,0 +1,68 @@
+2026-01-23 17:09:53,284 INFO    MainThread:4880 [wandb_setup.py:_flush():81] Current SDK version is 0.24.0
+2026-01-23 17:09:53,285 INFO    MainThread:4880 [wandb_setup.py:_flush():81] Configure stats pid to 4880
+2026-01-23 17:09:53,285 INFO    MainThread:4880 [wandb_setup.py:_flush():81] Loading settings from environment variables
+2026-01-23 17:09:53,285 INFO    MainThread:4880 [wandb_init.py:setup_run_log_directory():717] Logging user logs to /Users/caolu/Desktop/AI-Lab5-clip-base3/wandb/run-20260123_170953-wu61b169/logs/debug.log
+2026-01-23 17:09:53,285 INFO    MainThread:4880 [wandb_init.py:setup_run_log_directory():718] Logging internal logs to /Users/caolu/Desktop/AI-Lab5-clip-base3/wandb/run-20260123_170953-wu61b169/logs/debug-internal.log
+2026-01-23 17:09:53,285 INFO    MainThread:4880 [wandb_init.py:init():844] calling init triggers
+2026-01-23 17:09:53,285 INFO    MainThread:4880 [wandb_init.py:init():849] wandb.init called with sweep_config: {}
+config: {'batch_size': 16, 'roberta_dropout': 0.4, 'roberta_lr': 2e-05, 'middle_hidden_size': 768, 'clip_lr': 1e-06, 'clip_dropout': 0.4, 'attention_nheads': 8, 'attention_dropout': 0.4, 'fusion_dropout': 0.5, 'output_hidden_size': 256, 'weight_decay': 0.05, 'lr': 5e-05, 'text_only': False, 'image_only': False, 'model': 1, '_wandb': {}}
+2026-01-23 17:09:53,285 INFO    MainThread:4880 [wandb_init.py:init():892] starting backend
+2026-01-23 17:09:53,541 INFO    MainThread:4880 [wandb_init.py:init():895] sending inform_init request
+2026-01-23 17:09:53,564 INFO    MainThread:4880 [wandb_init.py:init():903] backend started and connected
+2026-01-23 17:09:53,567 INFO    MainThread:4880 [wandb_init.py:init():973] updated telemetry
+2026-01-23 17:09:53,593 INFO    MainThread:4880 [wandb_init.py:init():997] communicating run to backend with 90.0 second timeout
+2026-01-23 17:09:54,496 INFO    Thread-1 (wrapped_target):4880 [retry.py:__call__():164] [no run ID] Retry attempt failed:
+urllib3.exceptions.SSLError: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1016)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/requests/adapters.py", line 644, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/urllib3/util/retry.py", line 535, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.wandb.ai', port=443): Max retries exceeded with url: /graphql (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1016)')))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/lib/retry.py", line 157, in __call__
+    result = self._call_fn(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/internal/internal_api.py", line 397, in execute
+    return self.client.execute(*args, **kwargs)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/wandb/sdk/lib/gql_request.py", line 70, in execute
+    request = self.session.post(self.url, **post_args)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/requests/sessions.py", line 637, in post
+    return self.request("POST", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/requests/adapters.py", line 675, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='api.wandb.ai', port=443): Max retries exceeded with url: /graphql (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1016)')))
+2026-01-23 17:10:26,828 INFO    MainThread:4880 [wandb_init.py:init():1044] starting run threads in backend
+2026-01-23 17:10:26,901 INFO    MainThread:4880 [wandb_run.py:_console_start():2529] atexit reg
+2026-01-23 17:10:26,901 INFO    MainThread:4880 [wandb_run.py:_redirect():2377] redirect: wrap_raw
+2026-01-23 17:10:26,902 INFO    MainThread:4880 [wandb_run.py:_redirect():2446] Wrapping output streams.
+2026-01-23 17:10:26,902 INFO    MainThread:4880 [wandb_run.py:_redirect():2469] Redirects installed.
+2026-01-23 17:10:26,905 INFO    MainThread:4880 [wandb_init.py:init():1084] run started, returning control to user process
+2026-01-23 17:10:26,909 INFO    wandb-AsyncioManager-main:4880 [service_client.py:_forward_responses():80] Reached EOF.
+2026-01-23 17:10:26,909 INFO    wandb-AsyncioManager-main:4880 [mailbox.py:close():137] Closing mailbox, abandoning 1 handles.

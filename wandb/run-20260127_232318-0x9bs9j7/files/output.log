@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/caolu/Desktop/AI-Lab5-clip-base3/main.py", line 106, in <module>
+    trainer = trainer_validator(train_dataloader, config, model, device)
+                                                          ^^^^^
+NameError: name 'model' is not defined

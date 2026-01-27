@@ -1,0 +1,13 @@
+{"time":"2026-01-24T19:02:59.851622+08:00","level":"INFO","msg":"stream: starting","core version":"0.24.0"}
+{"time":"2026-01-24T19:03:03.73389+08:00","level":"INFO","msg":"stream: created new stream","id":"9zkqyqu3"}
+{"time":"2026-01-24T19:03:03.734964+08:00","level":"INFO","msg":"handler: started","stream_id":"9zkqyqu3"}
+{"time":"2026-01-24T19:03:03.735413+08:00","level":"INFO","msg":"writer: started","stream_id":"9zkqyqu3"}
+{"time":"2026-01-24T19:03:03.735679+08:00","level":"INFO","msg":"stream: started","id":"9zkqyqu3"}
+{"time":"2026-01-24T19:03:03.735764+08:00","level":"INFO","msg":"sender: started","stream_id":"9zkqyqu3"}
+{"time":"2026-01-24T22:09:25.042087+08:00","level":"ERROR","msg":"runupserter: failed to upload changes","error":"net/http: request canceled (Client.Timeout or context cancellation while reading body)"}
+{"time":"2026-01-24T22:10:43.438119+08:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2026-01-24T22:10:47.2297+08:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2026-01-24T22:10:47.250696+08:00","level":"INFO","msg":"stream: closing","id":"9zkqyqu3"}
+{"time":"2026-01-24T22:10:47.251095+08:00","level":"INFO","msg":"handler: closed","stream_id":"9zkqyqu3"}
+{"time":"2026-01-24T22:10:47.251856+08:00","level":"INFO","msg":"sender: closed","stream_id":"9zkqyqu3"}
+{"time":"2026-01-24T22:10:47.251902+08:00","level":"INFO","msg":"stream: closed","id":"9zkqyqu3"}

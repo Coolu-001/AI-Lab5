@@ -1,0 +1,10 @@
+{"time":"2026-01-25T23:11:35.349137+08:00","level":"INFO","msg":"stream: starting","core version":"0.24.0"}
+{"time":"2026-01-25T23:11:36.905333+08:00","level":"INFO","msg":"stream: created new stream","id":"8xopxjl9"}
+{"time":"2026-01-25T23:11:36.90562+08:00","level":"INFO","msg":"stream: started","id":"8xopxjl9"}
+{"time":"2026-01-25T23:11:36.905633+08:00","level":"INFO","msg":"handler: started","stream_id":"8xopxjl9"}
+{"time":"2026-01-25T23:11:36.905645+08:00","level":"INFO","msg":"sender: started","stream_id":"8xopxjl9"}
+{"time":"2026-01-25T23:11:36.905649+08:00","level":"INFO","msg":"writer: started","stream_id":"8xopxjl9"}
+{"time":"2026-01-26T01:12:26.678478+08:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/coolu0811-east-china-normal-university/AILAB5/8xopxjl9/file_stream\": read tcp 192.168.110.24:51851->35.186.228.49:443: read: connection reset by peer"}
+{"time":"2026-01-26T01:12:55.444823+08:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/coolu0811-east-china-normal-university/AILAB5/8xopxjl9/file_stream\": read tcp 192.168.110.24:53758->35.186.228.49:443: read: connection reset by peer"}
+{"time":"2026-01-26T01:13:10.394728+08:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/coolu0811-east-china-normal-university/AILAB5/8xopxjl9/file_stream\": read tcp 192.168.110.24:53767->35.186.228.49:443: read: connection reset by peer"}
+{"time":"2026-01-26T01:13:25.453013+08:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/coolu0811-east-china-normal-university/AILAB5/8xopxjl9/file_stream\": read tcp 192.168.110.24:53768->35.186.228.49:443: read: connection reset by peer"}

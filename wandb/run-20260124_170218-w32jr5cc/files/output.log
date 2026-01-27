@@ -1,0 +1,52 @@
+Some weights of RobertaModel were not initialized from the model checkpoint at FacebookAI/roberta-base and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Epoch 1/50: 100%|█████████████| 200/200 [16:12<00:00,  4.86s/it, loss=1.1572, lr=5.00e-06]
+Evaluating: 100%|█████████████████████████████████████████| 50/50 [00:45<00:00,  1.09it/s]
+Epoch 2/50: 100%|█████████████| 200/200 [19:04<00:00,  5.72s/it, loss=1.3121, lr=1.00e-05]
+Evaluating: 100%|█████████████████████████████████████████| 50/50 [01:00<00:00,  1.21s/it]
+Epoch 3/50: 100%|█████████████| 200/200 [14:58<00:00,  4.49s/it, loss=1.1032, lr=1.50e-05]
+Evaluating: 100%|█████████████████████████████████████████| 50/50 [00:51<00:00,  1.03s/it]
+Epoch 4/50: 100%|█████████████| 200/200 [15:08<00:00,  4.54s/it, loss=1.0885, lr=2.00e-05]
+Evaluating: 100%|█████████████████████████████████████████| 50/50 [00:44<00:00,  1.12it/s]
+Epoch 5/50: 100%|█████████████| 200/200 [14:36<00:00,  4.38s/it, loss=0.7256, lr=2.50e-05]
+Evaluating: 100%|█████████████████████████████████████████| 50/50 [00:46<00:00,  1.07it/s]
+EarlyStopping counter: 1 out of 5
+Epoch 6/50: 100%|█████████████| 200/200 [14:49<00:00,  4.45s/it, loss=0.6902, lr=3.00e-05]
+Evaluating: 100%|█████████████████████████████████████████| 50/50 [00:42<00:00,  1.18it/s]
+EarlyStopping counter: 2 out of 5
+Epoch 7/50: 100%|█████████████| 200/200 [16:49<00:00,  5.05s/it, loss=0.5723, lr=3.50e-05]
+Evaluating: 100%|█████████████████████████████████████████| 50/50 [00:52<00:00,  1.05s/it]
+EarlyStopping counter: 3 out of 5
+Epoch 8/50:   0%|                                                 | 0/200 [01:22<?, ?it/s]
+Traceback (most recent call last):
+  File "/Users/caolu/Desktop/AI-Lab5-clip-base3/main.py", line 111, in <module>
+    val_accuracy = trainer.train(train_dataloader, valid_dataloader, config.epochs, evaluate_every=1)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/Desktop/AI-Lab5-clip-base3/train_validate.py", line 85, in train
+    for batch in pbar:
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/tqdm/std.py", line 1181, in __iter__
+    for obj in iterable:
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/utils/data/dataloader.py", line 484, in __iter__
+    return self._get_iterator()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/utils/data/dataloader.py", line 415, in _get_iterator
+    return _MultiProcessingDataLoaderIter(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/utils/data/dataloader.py", line 1138, in __init__
+    w.start()
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/multiprocessing/process.py", line 121, in start
+    self._popen = self._Popen(self)
+                  ^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/multiprocessing/context.py", line 224, in _Popen
+    return _default_context.get_context().Process._Popen(process_obj)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/multiprocessing/context.py", line 288, in _Popen
+    return Popen(process_obj)
+           ^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/multiprocessing/popen_spawn_posix.py", line 32, in __init__
+    super().__init__(process_obj)
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/multiprocessing/popen_fork.py", line 19, in __init__
+    self._launch(process_obj)
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/multiprocessing/popen_spawn_posix.py", line 62, in _launch
+    f.write(fp.getbuffer())
+KeyboardInterrupt

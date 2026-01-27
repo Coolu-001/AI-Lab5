@@ -1,0 +1,39 @@
+Some weights of RobertaModel were not initialized from the model checkpoint at FacebookAI/roberta-base and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Epoch 1/50: 100%|████████████████████████████████████████████| 200/200 [14:14<00:00,  4.27s/it, loss=0.8621, lr=1.00e-05]
+Evaluating: 100%|████████████████████████████████████████████████████████████████████████| 50/50 [00:33<00:00,  1.47it/s]
+Epoch 2/50: 100%|████████████████████████████████████████████| 200/200 [13:33<00:00,  4.07s/it, loss=1.0232, lr=2.00e-05]
+Evaluating: 100%|████████████████████████████████████████████████████████████████████████| 50/50 [00:34<00:00,  1.47it/s]
+Epoch 3/50: 100%|████████████████████████████████████████████| 200/200 [13:03<00:00,  3.92s/it, loss=0.6990, lr=3.00e-05]
+Evaluating: 100%|████████████████████████████████████████████████████████████████████████| 50/50 [00:34<00:00,  1.45it/s]
+Epoch 4/50: 100%|████████████████████████████████████████████| 200/200 [13:23<00:00,  4.02s/it, loss=0.8887, lr=4.00e-05]
+Evaluating: 100%|████████████████████████████████████████████████████████████████████████| 50/50 [00:33<00:00,  1.49it/s]
+Epoch 5/50: 100%|████████████████████████████████████████████| 200/200 [13:27<00:00,  4.04s/it, loss=1.1033, lr=5.00e-05]
+Evaluating: 100%|████████████████████████████████████████████████████████████████████████| 50/50 [00:36<00:00,  1.37it/s]
+EarlyStopping counter: 1 out of 5
+Epoch 6/50:   5%|██▎                                          | 10/200 [01:01<19:37,  6.20s/it, loss=0.7106, lr=5.05e-05]
+Traceback (most recent call last):
+  File "/Users/caolu/Desktop/AI-Lab5-clip-base3/main.py", line 107, in <module>
+    val_accuracy = trainer.train(train_dataloader, valid_dataloader, config.epochs, evaluate_every=1)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/Desktop/AI-Lab5-clip-base3/train_validate.py", line 100, in train
+    self.optimizer.step()
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/optim/lr_scheduler.py", line 137, in wrapper
+    return func.__get__(opt, opt.__class__)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/optim/optimizer.py", line 487, in wrapper
+    out = func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/optim/optimizer.py", line 91, in _use_grad
+    ret = func(self, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/optim/adamw.py", line 220, in step
+    adamw(
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/optim/optimizer.py", line 154, in maybe_fallback
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/optim/adamw.py", line 782, in adamw
+    func(
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/optim/adamw.py", line 375, in _single_tensor_adamw
+    exp_avg.lerp_(grad, 1 - beta1)
+KeyboardInterrupt

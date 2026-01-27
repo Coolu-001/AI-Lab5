@@ -1,0 +1,36 @@
+'(MaxRetryError("HTTPSConnectionPool(host='huggingface.co', port=443): Max retries exceeded with url: /FacebookAI/roberta-base/resolve/main/tokenizer_config.json (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1016)')))"), '(Request ID: 97e519e7-f142-4161-b008-dd795586cc1f)')' thrown while requesting HEAD https://huggingface.co/FacebookAI/roberta-base/resolve/main/tokenizer_config.json
+Retrying in 1s [Retry 1/5].
+'(MaxRetryError("HTTPSConnectionPool(host='huggingface.co', port=443): Max retries exceeded with url: /FacebookAI/roberta-base/resolve/main/tokenizer_config.json (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1016)')))"), '(Request ID: 7d8f8ceb-a827-40d1-8332-cd5ab20e7f95)')' thrown while requesting HEAD https://huggingface.co/FacebookAI/roberta-base/resolve/main/tokenizer_config.json
+Retrying in 2s [Retry 2/5].
+'(MaxRetryError("HTTPSConnectionPool(host='huggingface.co', port=443): Max retries exceeded with url: /FacebookAI/roberta-base/resolve/main/tokenizer_config.json (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1016)')))"), '(Request ID: 96d2ba8b-e7bd-4f14-98ad-923a169fd102)')' thrown while requesting HEAD https://huggingface.co/FacebookAI/roberta-base/resolve/main/tokenizer_config.json
+Retrying in 4s [Retry 3/5].
+'(MaxRetryError("HTTPSConnectionPool(host='huggingface.co', port=443): Max retries exceeded with url: /FacebookAI/roberta-base/resolve/main/tokenizer_config.json (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1016)')))"), '(Request ID: 4033ed94-186d-4031-9c8f-8da757706f63)')' thrown while requesting HEAD https://huggingface.co/FacebookAI/roberta-base/resolve/main/tokenizer_config.json
+Retrying in 8s [Retry 4/5].
+'(MaxRetryError("HTTPSConnectionPool(host='huggingface.co', port=443): Max retries exceeded with url: /FacebookAI/roberta-base/resolve/main/tokenizer_config.json (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1016)')))"), '(Request ID: 13967aea-e82a-4737-a6d0-68eab2c2fd49)')' thrown while requesting HEAD https://huggingface.co/FacebookAI/roberta-base/resolve/main/tokenizer_config.json
+Retrying in 8s [Retry 5/5].
+Traceback (most recent call last):
+  File "/Users/caolu/Desktop/AI-Lab5-clip-base3/main.py", line 97, in <module>
+    train_dataloader, valid_dataloader, test_dataloader = create_dataloader(
+                                                          ^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/Desktop/AI-Lab5-clip-base3/load_dataset.py", line 199, in create_dataloader
+    t_guids, t_texts, t_masks, t_images, t_labels = encode_text_image(original_train_data)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/Desktop/AI-Lab5-clip-base3/load_dataset.py", line 169, in encode_text_image
+    image_inputs = processor(images=image, return_tensors="pt")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/transformers/models/clip/processing_clip.py", line 109, in __call__
+    image_features = self.image_processor(images, return_tensors=return_tensors, **image_processor_kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/transformers/image_processing_utils.py", line 41, in __call__
+    return self.preprocess(images, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/transformers/models/clip/image_processing_clip.py", line 331, in preprocess
+    image = self.rescale(image=image, scale=rescale_factor, input_data_format=input_data_format)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/transformers/image_processing_utils.py", line 76, in rescale
+    return rescale(image, scale=scale, data_format=data_format, input_data_format=input_data_format, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/transformers/image_transforms.py", line 133, in rescale
+    rescaled_image = rescaled_image.astype(dtype)  # Finally downcast to the desired dtype at the end
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt
