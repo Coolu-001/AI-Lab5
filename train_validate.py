@@ -86,24 +86,24 @@ class trainer_validator():
         
         for epoch in range(num_epochs):
         # --- 两阶段预热核心代码开始 ---
-            # if epoch < 3: 
-            #     # 第一阶段：文本预热，且严格压制“大脑” gate_layer
-            #     print(f" >>> Phase 1: Warming up Text. Gate is restricted.")
-            #     for param_group in self.optimizer.param_groups:
-            #         if param_group['name'] == "text_base":
-            #             param_group['lr'] = 2e-5
-            #         if param_group['name'] == "image_base":
-            #             param_group['lr'] = 1e-9  # 彻底锁定 CLIP
-            #         # if param_group['name'] == "fusion_gate":
-            #         #     param_group['lr'] = 1e-6  # 限制门控学习，防止它在没图像时产生偏见
-            # elif epoch == 3:
-            #     # 第二阶段：全解冻，激活大脑
-            #     print(f" >>> Phase 2: Unfreezing Gate and Image for Joint Learning")
-            #     for param_group in self.optimizer.param_groups:
-            #         if param_group['name'] == "image_base":
-            #             param_group['lr'] = self.config.clip_lr
-            #         if param_group['name'] == "fusion_gate":
-            #             param_group['lr'] = self.config.lr  # 恢复正常速度
+            if epoch < 3: 
+                # 第一阶段：文本预热，且严格压制“大脑” gate_layer
+                print(f" >>> Phase 1: Warming up Text. Gate is restricted.")
+                for param_group in self.optimizer.param_groups:
+                    if param_group['name'] == "text_base":
+                        param_group['lr'] = 2e-5
+                    if param_group['name'] == "image_base":
+                        param_group['lr'] = 1e-9  # 彻底锁定 CLIP
+                    # if param_group['name'] == "fusion_gate":
+                    #     param_group['lr'] = 1e-6  # 限制门控学习，防止它在没图像时产生偏见
+            elif epoch == 3:
+                # 第二阶段：全解冻，激活大脑
+                print(f" >>> Phase 2: Unfreezing Gate and Image for Joint Learning")
+                for param_group in self.optimizer.param_groups:
+                    if param_group['name'] == "image_base":
+                        param_group['lr'] = self.config.clip_lr
+                    if param_group['name'] == "fusion_gate":
+                        param_group['lr'] = self.config.lr  # 恢复正常速度
             self.model.train()
             train_loss_total = 0
             train_pred, train_true = [], []

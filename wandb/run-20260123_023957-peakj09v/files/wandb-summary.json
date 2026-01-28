@@ -1,1 +1,0 @@
-{"alpha_mean":0.3658516472578049,"val_loss":0.8740642309188843,"alpha_std":0.15117328464984894,"train_loss":0.5584158301353455,"_runtime":9691,"epoch":10,"val_accuracy":0.72125,"val_f1":0.7270335002695023,"_step":219,"_timestamp":1.769116890584797e+09,"lr":5e-05,"_wandb":{"runtime":9691},"train_f1":0.9426327202184075,"train_accuracy":0.9434375,"iteration":2000}

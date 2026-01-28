@@ -33,6 +33,7 @@ pip install -r requirements.txt
 |-- roberta-base # 用于存放roberta预训练模型，防止网络不稳定，也可以选择不下载
 |-- config.py # 实验参数配置
 |-- early_stopping.py # 早停机制
+|-- ExtractBadcase.py # 找到Badcase中索引对应的图片
 |-- load_dataset.py # 加载数据集
 |-- main.py # 主函数
 |-- FusionModels.py # 存放Text Model、Image Model以及4种Fusion Model
@@ -67,12 +68,14 @@ python main.py --batch_size 16 --roberta_dropout 0.4 --roberta_lr 2e-5 --middle_
     - `lr 2e-5`: 设置优化器的学习率为 5e-5。
     - `text_only`: 启用仅使用文本的模式。
     - `model 5`: 选择Dynamic Gated Fusion Model。
+  
 **注：代码参数默认设置即为本次实验采用的参数组合，命令可简化，仅选择model**
 **由于不同 FusionModel的训练代码略有不同，Late Fusion需要接受更多的参数，故采用版本管理**
 
 - 当前页面所在main分支代码适配Dynamic Gated Fusion Model
-- 适配Late Fusion Model
-- 适配剩下两种：ConcatFusionModel、TransformerFusionModel
+- clip_base+Model1-2:代表代码使用Clip提取图像特征，数据处理逻辑适配ConcatFusionModel、TransformerFusionModel
+- clip_base+lateFusion：代表代码使用Clip提取图像特征，数据处理逻辑适配Late Fusion Model
+- resnet_base:代表代码使用resent18提取图像特征，是第一版代码，较为简单，仅作保存
 
 ## 代码参考
 本次实验参考了以下代码仓库:

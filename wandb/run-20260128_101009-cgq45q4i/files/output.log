@@ -1,0 +1,104 @@
+ >>> Phase 1: Warming up Text. Gate is restricted.
+Epoch 1/50: 100%|███████████| 200/200 [14:26<00:00,  4.33s/it, loss=1.1210, lr=5.00e-06]
+Evaluating: 100%|███████████████████████████████████████| 50/50 [00:54<00:00,  1.09s/it]
+Saved best model at Epoch 1 to trained_models/best_model_epoch1.pt
+ >>> Phase 1: Warming up Text. Gate is restricted.
+Epoch 2/50: 100%|███████████| 200/200 [14:24<00:00,  4.32s/it, loss=0.9776, lr=1.00e-05]
+Evaluating: 100%|███████████████████████████████████████| 50/50 [00:55<00:00,  1.11s/it]
+Saved best model at Epoch 2 to trained_models/best_model_epoch2.pt
+ >>> Phase 1: Warming up Text. Gate is restricted.
+Epoch 3/50: 100%|███████████| 200/200 [16:14<00:00,  4.87s/it, loss=0.9125, lr=1.50e-05]
+Evaluating: 100%|███████████████████████████████████████| 50/50 [01:01<00:00,  1.23s/it]
+Saved best model at Epoch 3 to trained_models/best_model_epoch3.pt
+ >>> Phase 2: Unfreezing Gate and Image for Joint Learning
+Epoch 4/50: 100%|███████████| 200/200 [16:05<00:00,  4.83s/it, loss=0.6912, lr=2.00e-05]
+Evaluating: 100%|███████████████████████████████████████| 50/50 [01:08<00:00,  1.37s/it]
+Saved best model at Epoch 4 to trained_models/best_model_epoch4.pt
+Epoch 5/50: 100%|███████████| 200/200 [15:24<00:00,  4.62s/it, loss=0.7283, lr=2.50e-05]
+Evaluating: 100%|███████████████████████████████████████| 50/50 [00:58<00:00,  1.18s/it]
+Saved best model at Epoch 5 to trained_models/best_model_epoch5.pt
+Epoch 6/50: 100%|███████████| 200/200 [16:13<00:00,  4.87s/it, loss=0.7301, lr=3.00e-05]
+Evaluating: 100%|███████████████████████████████████████| 50/50 [01:00<00:00,  1.21s/it]
+Saved best model at Epoch 6 to trained_models/best_model_epoch6.pt
+Epoch 7/50: 100%|███████████| 200/200 [14:36<00:00,  4.38s/it, loss=0.6977, lr=3.50e-05]
+Evaluating: 100%|███████████████████████████████████████| 50/50 [00:59<00:00,  1.20s/it]
+EarlyStopping counter: 1 out of 5
+Epoch 8/50: 100%|███████████| 200/200 [16:06<00:00,  4.83s/it, loss=0.7540, lr=4.00e-05]
+Evaluating: 100%|███████████████████████████████████████| 50/50 [00:55<00:00,  1.11s/it]
+Epoch 9/50: 100%|███████████| 200/200 [14:45<00:00,  4.43s/it, loss=0.6608, lr=4.50e-05]
+Evaluating: 100%|███████████████████████████████████████| 50/50 [00:55<00:00,  1.12s/it]
+Saved best model at Epoch 9 to trained_models/best_model_epoch9.pt
+EarlyStopping counter: 1 out of 5
+Epoch 10/50: 100%|██████████| 200/200 [15:27<00:00,  4.64s/it, loss=0.6511, lr=5.00e-05]
+Evaluating: 100%|███████████████████████████████████████| 50/50 [00:56<00:00,  1.13s/it]
+Saved best model at Epoch 10 to trained_models/best_model_epoch10.pt
+EarlyStopping counter: 2 out of 5
+Epoch 11/50: 100%|██████████| 200/200 [16:23<00:00,  4.92s/it, loss=0.6253, lr=4.87e-05]
+Evaluating: 100%|███████████████████████████████████████| 50/50 [00:55<00:00,  1.11s/it]
+EarlyStopping counter: 3 out of 5
+Epoch 12/50:   2%|▏         | 4/200 [02:39<2:10:08, 39.84s/it, loss=0.6590, lr=4.87e-05]
+Traceback (most recent call last):
+  File "/Users/caolu/Desktop/AI_Lab5/main.py", line 118, in <module>
+    val_accuracy = trainer.train(train_dataloader, valid_dataloader, config.epochs, evaluate_every=1)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/Desktop/AI_Lab5/train_validate.py", line 121, in train
+    train_pred_labels, loss, (m, s) = self.model(input_ids, attention_mask, images, labels)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/Desktop/AI_Lab5/FusionModels.py", line 272, in forward
+    i_feat = self.image_model(images)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/Desktop/AI_Lab5/FusionModels.py", line 140, in forward
+    outputs = self.model(pixel_values=images.contiguous())
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/transformers/models/clip/modeling_clip.py", line 1171, in forward
+    return self.vision_model(
+           ^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/transformers/models/clip/modeling_clip.py", line 1097, in forward
+    encoder_outputs = self.encoder(
+                      ^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/transformers/models/clip/modeling_clip.py", line 877, in forward
+    layer_outputs = encoder_layer(
+                    ^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/modules/normalization.py", line 217, in forward
+    return F.layer_norm(
+           ^^^^^^^^^^^^^
+  File "/Users/caolu/opt/anaconda3/envs/multi/lib/python3.11/site-packages/torch/nn/functional.py", line 2900, in layer_norm
+    return torch.layer_norm(
+           ^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

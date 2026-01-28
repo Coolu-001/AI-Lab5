@@ -94,7 +94,7 @@ if __name__ == "__main__":
     set_seed(config.seed)
     wandb.init(
             project="AILAB5",
-            name=f"最终实验-消融text only{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+            name=f"最终实验{datetime.now().strftime('%Y%m%d_%H%M%S')}",
             config=vars(args),
             reinit=True,
             allow_val_change=True
@@ -109,12 +109,10 @@ if __name__ == "__main__":
     if args.model == 1:
         model = ConcatFusionModel(config)
     elif args.model == 2:
-        model = CrossAttentionFusionModel(config)
-    elif args.model == 3:
         model = TransformerFusionModel(config)
-    elif args.model == 4:
+    elif args.model == 3:
         model = LateFusionModel(config)
-    elif args.model == 5:
+    elif args.model == 4:
         model = DynamicGatedFusionModel(config)
     trainer = trainer_validator(train_dataloader, config, model, device)
     val_accuracy = trainer.train(train_dataloader, valid_dataloader, config.epochs, evaluate_every=1)

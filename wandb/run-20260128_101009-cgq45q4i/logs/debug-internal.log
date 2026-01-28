@@ -1,0 +1,14 @@
+{"time":"2026-01-28T10:10:10.01163+08:00","level":"INFO","msg":"stream: starting","core version":"0.24.0"}
+{"time":"2026-01-28T10:10:10.976053+08:00","level":"INFO","msg":"stream: created new stream","id":"cgq45q4i"}
+{"time":"2026-01-28T10:10:10.976374+08:00","level":"INFO","msg":"handler: started","stream_id":"cgq45q4i"}
+{"time":"2026-01-28T10:10:10.976448+08:00","level":"INFO","msg":"writer: started","stream_id":"cgq45q4i"}
+{"time":"2026-01-28T10:10:10.976473+08:00","level":"INFO","msg":"sender: started","stream_id":"cgq45q4i"}
+{"time":"2026-01-28T10:10:10.976674+08:00","level":"INFO","msg":"stream: started","id":"cgq45q4i"}
+{"time":"2026-01-28T13:14:12.876838+08:00","level":"INFO","msg":"flowcontrol: backed up, offloading to disk","recordNumber":7325}
+{"time":"2026-01-28T13:14:12.889398+08:00","level":"ERROR","msg":"flowcontrol: failed reading after 0 records: transactionlog: bad header: leveldb/record: reader not in first block","chunk":{"InitialOffset":1574796,"InitialNumber":7325,"Count":5}}
+{"time":"2026-01-28T13:14:12.909857+08:00","level":"INFO","msg":"flowcontrol: unblocked","totalOffloaded":5}
+{"time":"2026-01-28T13:14:12.934579+08:00","level":"INFO","msg":"stream: closing","id":"cgq45q4i"}
+{"time":"2026-01-28T13:15:39.565439+08:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2026-01-28T13:15:40.027632+08:00","level":"INFO","msg":"handler: closed","stream_id":"cgq45q4i"}
+{"time":"2026-01-28T13:15:40.029571+08:00","level":"INFO","msg":"sender: closed","stream_id":"cgq45q4i"}
+{"time":"2026-01-28T13:15:40.030199+08:00","level":"INFO","msg":"stream: closed","id":"cgq45q4i"}
